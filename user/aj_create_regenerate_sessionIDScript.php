@@ -1,5 +1,4 @@
 <?php
-$arr= array();
 
 function aj_session_create_regenerate_id($validity,$session_name="none"){
 if($session_name != "none"){
@@ -8,12 +7,11 @@ if($session_name != "none"){
 session_start();
 if(isset($_SESSION['expiratory_time'])){
 if($_SESSION['expiratory_time'] < time()-$validity){
-	echo "inside if";
+	echo "This session has expired,generating new one...<br>";
 		$counter = 0;
-		foreach($_SESSION as $key => $value){
-			if($key != 'expiratory_time'){
-				$arr[$key] = $value;
-			}
+		$arr = $_SESSION;
+		if(array_key_exists('expiratory_time',$arr)){
+		  unset($arr['expiratory_time']);
 		}
 		session_destroy();
 		aj_session_create($session_name);
@@ -39,11 +37,9 @@ if($session_name != "none"){
 }
 	session_id($new_session_id);
 	session_start();
-		echo "Old sesson destroyed and data transfered to new one";
-	$_SESSION['expiratory_time']=time();
-	foreach($arr as $key => $value){
-		$_SESSION[$key]=$value;
-	}
+		echo "<br> Old sesson destroyed and data transfered to new one";
+		$_SESSION = $arr;
+  	$_SESSION['expiratory_time']=time();
 	
 	
 }

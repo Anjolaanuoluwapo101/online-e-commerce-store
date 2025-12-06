@@ -72,22 +72,20 @@
                 
                 <div class="card-admin">
                     <div class="card-admin-header">
-                        <h5 class="mb-0"><i class="fa fa-edit me-2"></i> Update Payment Status</h5>
+                        <h5 class="mb-0"><i class="fa fa-edit me-2"></i> Payment Status</h5>
                     </div>
                     <div class="card-admin-body">
                         <form action="/admin/payments/<?= $payment['id'] ?>/update-status" method="POST">
                             <div class="mb-3">
                                 <label for="status" class="form-label">Payment Status</label>
-                                <select class="form-select" id="status" name="status">
-                                    <option value="pending" <?= $payment['status'] === 'pending' ? 'selected' : '' ?>>Pending</option>
-                                    <option value="success" <?= $payment['status'] === 'success' ? 'selected' : '' ?>>Success</option>
-                                    <option value="failed" <?= $payment['status'] === 'failed' ? 'selected' : '' ?>>Failed</option>
+                                <select class="form-select" id="status" name="status" disabled>
+                                    <option value="paid" <?= $payment['status'] === 'paid' ? 'selected' : '' ?>>Paid</option>
+                                    <option value="unpaid" <?= $payment['status'] === 'unpaid' ? 'selected' : '' ?>>Unpaid</option>
+                                    <option value="refund" <?= $payment['status'] === 'refund' ? 'selected' : '' ?>>Refund</option>
                                 </select>
                             </div>
                             
-                            <button type="submit" class="btn-admin w-100">
-                                <i class="fa fa-save me-1"></i> Update Status
-                            </button>
+                            
                         </form>
                     </div>
                 </div>

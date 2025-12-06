@@ -168,7 +168,7 @@ class PHPMailerService
                     margin-bottom: 30px;
                 }
                 .items-table th {
-                    background-color: #3498db;
+                    background-color:rgb(190, 27, 27);
                     color: white;
                     padding: 12px;
                     text-align: left;
@@ -199,7 +199,7 @@ class PHPMailerService
                 .total-amount {
                     font-size: 1.2em;
                     font-weight: bold;
-                    color: #e74c3c;
+                    color:rgb(190, 27, 27);
                 }
                 .footer {
                     text-align: center;
@@ -249,7 +249,7 @@ class PHPMailerService
             $html .= '
                     <tr>
                         <td>' . htmlspecialchars($item['productname']) . '</td>
-                        <td>$' . number_format($item['price'], 2) . '</td>
+                        <td>₦' . number_format($item['price'], 2) . '</td>
                         <td>' . $item['quantity'] . '</td>
                         <td class="text-right">$' . number_format($itemTotal, 2) . '</td>
                     </tr>';
@@ -266,7 +266,7 @@ class PHPMailerService
                 </div>
                 <div class="totals-row">
                     <span class="totals-label">Total:</span>
-                    <span class="total-amount">$' . number_format($total, 2) . '</span>
+                    <span class="total-amount">₦' . number_format($total, 2) . '</span>
                 </div>
             </div>
             

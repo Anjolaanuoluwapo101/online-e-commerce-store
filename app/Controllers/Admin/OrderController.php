@@ -70,9 +70,10 @@ class OrderController extends Controller
                 $this->orderModel->updateStatus($id, $status);
             }
             
-            if (in_array($paymentStatus, $validPaymentStatuses)) {
-                $this->orderModel->updatePaymentStatus($id, $paymentStatus);
-            }
+            //Payment Status should be uneditable so I will comment this out
+            // if (in_array($paymentStatus, $validPaymentStatuses)) {
+            //     $this->orderModel->updatePaymentStatus($id, $paymentStatus);
+            // } 
             
             // Redirect back to order details
             header("Location: /admin/orders/{$id}");

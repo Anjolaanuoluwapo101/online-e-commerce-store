@@ -76,6 +76,7 @@ class ProductController extends Controller
             error_log('ProductController@index error: ' . $e->getMessage());
             // Display a user-friendly error message
             http_response_code(500);
+            echo $e->getMessage();
             echo 'An error occurred while loading products. Please try again later.';
         }
     }

@@ -8,12 +8,13 @@
                 <h5 class="mb-0"><i class="fa fa-filter me-2"></i> Filter Orders</h5>
             </div>
             <div class="card-admin-body">
-                <div class="row">
-                    <div class="col-md-3 mb-3">
+                <!-- First Row - Search and Status Filters -->
+                <div class="row mb-3">
+                    <div class="col-md-4 mb-3">
                         <label for="searchFilter" class="form-label">Search (Email)</label>
                         <input type="text" id="searchFilter" class="form-control" placeholder="Search by email...">
                     </div>
-                    <div class="col-md-2 mb-3">
+                    <div class="col-md-4 mb-3">
                         <label for="statusFilter" class="form-label">Order Status</label>
                         <select id="statusFilter" class="form-select">
                             <option value="all">All Statuses</option>
@@ -23,7 +24,7 @@
                             <option value="cancelled">Cancelled</option>
                         </select>
                     </div>
-                    <div class="col-md-2 mb-3">
+                    <div class="col-md-4 mb-3">
                         <label for="paymentStatusFilter" class="form-label">Payment Status</label>
                         <select id="paymentStatusFilter" class="form-select">
                             <option value="all">All Statuses</option>
@@ -32,7 +33,11 @@
                             <option value="refunded">Refunded</option>
                         </select>
                     </div>
-                    <div class="col-md-2 mb-3">
+                </div>
+                
+                <!-- Second Row - Sorting Options and Action Buttons -->
+                <div class="row align-items-end">
+                    <div class="col-md-4 mb-3">
                         <label for="sortFilter" class="form-label">Sort By</label>
                         <select id="sortFilter" class="form-select">
                             <option value="id">ID</option>
@@ -43,20 +48,22 @@
                             <option value="created_at">Date Created</option>
                         </select>
                     </div>
-                    <div class="col-md-2 mb-3">
+                    <div class="col-md-4 mb-3">
                         <label for="directionFilter" class="form-label">Direction</label>
                         <select id="directionFilter" class="form-select">
                             <option value="DESC">Descending</option>
                             <option value="ASC">Ascending</option>
                         </select>
                     </div>
-                    <div class="col-md-1 mb-3 d-flex align-items-end">
-                        <button id="applyFilter" class="btn-admin me-2">
-                            <i class="fa fa-search"></i>
-                        </button>
-                        <button id="resetFilter" class="btn btn-secondary">
-                            <i class="fa fa-refresh"></i>
-                        </button>
+                    <div class="col-md-4 mb-3">
+                        <div class="d-flex gap-2">
+                            <button id="applyFilter" class="btn-admin flex-grow-1">
+                                <i class="fa fa-search me-1"></i> Apply Filters
+                            </button>
+                            <button id="resetFilter" class="btn btn-secondary flex-grow-1">
+                                <i class="fa fa-refresh me-1"></i> Reset
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

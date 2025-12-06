@@ -91,7 +91,8 @@ class PaymentController extends Controller
                 $this->callbackUrl
             );
 
-            return $transaction;
+            header('Location: ' . $transaction);
+            exit();
         } catch (\Exception $e) {
             // Log the error
             error_log('PaymentController@createTransaction error: ' . $e->getMessage());
@@ -142,7 +143,6 @@ class PaymentController extends Controller
             }
 
             // If successful, update both order and payment models
-            $this->orderModel->updateStatus($order['id'], 'completed');
             $this->orderModel->updatePaymentStatus($order['id'], 'paid');
             $this->paymentModel->updateStatus($payment['id'], 'paid');
 
@@ -150,7 +150,10 @@ class PaymentController extends Controller
             $this->mailer->sendInvoice($order['email'], 'Order Confirmation #' . $order['id'], $order['cart_data']);
 
             // Show success page or redirect to success page
-            echo 'Payment verified successfully. Thank you for your purchase!';
+            // Set a Session Flag
+            $_SESSION['payment_success'] = true;
+
+            $this->redirect('/cart');
         }catch(\Exception $e){
             error_log('PaymentController@verifyTransaction error: ' . $e->getMessage());
             // Send an Email to admin or customer service about the error using the mailer service
@@ -187,8 +190,10 @@ class PaymentController extends Controller
             $this->orderModel->updateStatus($order['id'], 'cancelled');
             $this->orderModel->updatePaymentStatus($order['id'], 'unpaid');
 
-            // Show cancellation page
-            return 'Payment was cancelled. Your order has been cancelled.';
+            // Set a Session Flag
+            $_SESSION['payment_cancelled'] = true;
+            
+            $this->redirect('/cart');
         }catch(\Exception $e){
             error_log('PaymentController@cancelTransaction error: ' . $e->getMessage());
             echo 'An error occurred during payment cancellation. Please contact support.';

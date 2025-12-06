@@ -55,7 +55,7 @@
                                         <tbody>
                                             <?php foreach ($cartData as $item): ?>
                                                 <tr>
-                                                    <td><?= htmlspecialchars($item['name']) ?></td>
+                                                    <td><?= htmlspecialchars($item['productname']) ?></td>
                                                     <td>₦<?= number_format($item['price'], 2) ?></td>
                                                     <td><?= $item['quantity'] ?></td>
                                                     <td>₦<?= number_format($item['price'] * $item['quantity'], 2) ?></td>
@@ -91,7 +91,7 @@
                             
                             <div class="mb-3">
                                 <label for="payment_status" class="form-label">Payment Status</label>
-                                <select class="form-select" id="payment_status" name="payment_status">
+                                <select class="form-select" id="payment_status" name="payment_status" disabled>
                                     <option value="unpaid" <?= $order['payment_status'] === 'unpaid' ? 'selected' : '' ?>>Unpaid</option>
                                     <option value="paid" <?= $order['payment_status'] === 'paid' ? 'selected' : '' ?>>Paid</option>
                                     <option value="refunded" <?= $order['payment_status'] === 'refunded' ? 'selected' : '' ?>>Refunded</option>

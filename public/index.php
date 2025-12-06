@@ -2,7 +2,8 @@
 
 // Load environment variables
 // Check if on localhost 
-if ($_SERVER['HTTP_HOST'] === 'localhost') {
+// echo $_SERVER['HTTP_HOST'];
+if (strpos($_SERVER['HTTP_HOST'], 'localhost') !== false) {
     $dotenvPath = __DIR__ . '/../.env';
     if (file_exists($dotenvPath)) {
         $lines = file($dotenvPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);

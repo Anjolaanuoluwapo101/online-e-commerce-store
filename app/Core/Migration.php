@@ -27,10 +27,11 @@ class Migration
      */
     private function createDatabase()
     {
-        $host = 'sql3.freesqldatabase.com';
-        $db_name = 'sql3807573';
-        $username = 'sql3807573';
-        $password = 'DjsYBc6Dv9';
+
+        $host = $_SERVER['DB_HOST'] ?? getenv('DB_HOST') ;
+        $db_name = $_SERVER['DB_NAME'] ?? getenv('DB_NAME') ;
+        $username = $_SERVER['DB_USER'] ?? getenv('DB_USER') ;
+        $password = $_SERVER['DB_PASSWORD'] ?? getenv('DB_PASSWORD') ;
 
         try {
             $dsn = "mysql:host={$host}";
@@ -53,11 +54,10 @@ class Migration
     {
         $sql = "CREATE TABLE IF NOT EXISTS categories (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(255) NOT NULL UNIQUE,
-            slug VARCHAR(255) NOT NULL UNIQUE,
+            name VARCHAR(150) NOT NULL UNIQUE,
+            slug VARCHAR(191) NOT NULL UNIQUE,
             description TEXT,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            created_at TIMESTAMP DEFAULT NOW()
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
 
         $this->db->exec($sql);
@@ -73,15 +73,14 @@ class Migration
         $sql = "CREATE TABLE IF NOT EXISTS products (
             id INT AUTO_INCREMENT PRIMARY KEY,
             category_id INT NOT NULL,
-            productname VARCHAR(255) NOT NULL,
-            brand VARCHAR(255),
+            productname VARCHAR(150) NOT NULL,
+            brand VARCHAR(150),
             price DECIMAL(10, 2) NOT NULL,
             quantity INT NOT NULL DEFAULT 0,
-            imagepath VARCHAR(255),
+            imagepath VARCHAR(150),
             description TEXT,
             upvotes INT DEFAULT 0,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            created_at TIMESTAMP DEFAULT NOW(),
             FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE,
             UNIQUE KEY unique_product_category (productname, category_id)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
@@ -98,11 +97,10 @@ class Migration
     {
         $sql = "CREATE TABLE IF NOT EXISTS tags (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(255) NOT NULL UNIQUE,
-            slug VARCHAR(255) NOT NULL UNIQUE,
+            name VARCHAR(150) NOT NULL UNIQUE,
+            slug VARCHAR(191) NOT NULL UNIQUE,
             description TEXT,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            created_at TIMESTAMP DEFAULT NOW()
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
 
         $this->db->exec($sql);
@@ -119,7 +117,6 @@ class Migration
             id INT AUTO_INCREMENT PRIMARY KEY,
             product_id INT NOT NULL,
             tag_id INT NOT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
             FOREIGN KEY (tag_id) REFERENCES tags(id) ON DELETE CASCADE,
             UNIQUE KEY unique_product_tag (product_id, tag_id)
@@ -137,13 +134,12 @@ class Migration
     {
         $sql = "CREATE TABLE IF NOT EXISTS orders (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            email VARCHAR(255) NOT NULL,
+            email VARCHAR(150) NOT NULL,
             total_amount DECIMAL(15, 2) NOT NULL, 
             cart_data LONGTEXT NULL,
             status ENUM('pending', 'processing', 'completed', 'cancelled') DEFAULT 'pending',
             payment_status ENUM('unpaid','paid','refund') DEFAULT 'unpaid',
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            created_at TIMESTAMP DEFAULT NOW()
         );";
         $this->db->exec($sql);
     }
@@ -173,13 +169,13 @@ class Migration
             status ENUM('unpaid','paid','refund') DEFAULT 'unpaid',
             
             -- Store the raw response  from Paystack (for debugging)
-            gateway_response VARCHAR(255) NULL, 
+            gateway_response VARCHAR(150) NULL, 
             
             -- Channel used (card, bank, ussd) - for analytics
             channel VARCHAR(20) NULL, 
             
             paid_at TIMESTAMP NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            created_at TIMESTAMP DEFAULT NOW(),
 
             FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
             INDEX(reference)
@@ -187,22 +183,7 @@ class Migration
         $this->db->exec($sql);
     }
 
-    /**
-     * Add cart_data column to orders table (for existing installations)
-     * 
-     * @return void
-     */
-    public function addCartDataToOrdersTable()
-    {
-        try {
-            $sql = "ALTER TABLE orders ADD COLUMN cart_data LONGTEXT NULL";
-            $this->db->exec($sql);
-        } catch (\Exception $e) {
-            // Column might already exist, ignore the error
-            error_log("Column cart_data might already exist in orders table: " . $e->getMessage());
-        }
-    }
-
+    
     /**
      * Create all tables
      * 
@@ -216,8 +197,6 @@ class Migration
         $this->createProductTagsTable();
         $this->createOrdersTable();
         $this->createPaymentsTable();
-        // Add cart_data column to existing orders table
-        $this->addCartDataToOrdersTable();
     }
 
     /**

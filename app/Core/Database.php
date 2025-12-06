@@ -24,7 +24,7 @@ class Database
         if (self::$instance === null) {
             self::$instance = new Database();
         }
-        
+
         return self::$instance;
     }
 
@@ -36,10 +36,12 @@ class Database
     private function connect()
     {
         // Try to get environment variables using $_SERVER first, then getenv()
-        $host = $_SERVER['DB_HOST'] ?? getenv('DB_HOST') ?? 'sql3.freesqldatabase.com';
-        $db_name = $_SERVER['DB_NAME'] ?? getenv('DB_NAME') ?? 'sql3807573';
-        $username = $_SERVER['DB_USER'] ?? getenv('DB_USER') ?? 'sql3807573';
-        $password = $_SERVER['DB_PASSWORD'] ?? getenv('DB_PASSWORD') ?? 'DjsYBc6Dv9';
+        $host = $_SERVER['DB_HOST'] ?? getenv('DB_HOST') ;
+        $db_name = $_SERVER['DB_NAME'] ?? getenv('DB_NAME') ;
+        $username = $_SERVER['DB_USER'] ?? getenv('DB_USER') ;
+        $password = $_SERVER['DB_PASSWORD'] ?? getenv('DB_PASSWORD') ;
+
+        
 
         try {
             $dsn = "mysql:host={$host};dbname={$db_name};charset=utf8mb4";
@@ -48,7 +50,7 @@ class Database
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                 PDO::ATTR_EMULATE_PREPARES => false,
             ];
-            
+
             $this->connection = new PDO($dsn, $username, $password, $options);
         } catch (\PDOException $e) {
             throw new \Exception("Database connection failed: " . $e->getMessage());
@@ -70,7 +72,9 @@ class Database
      * 
      * @return void
      */
-    private function __clone() {}
+    private function __clone()
+    {
+    }
 
     /**
      * Prevent unserialization

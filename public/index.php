@@ -58,6 +58,8 @@ $router->get('/products/{any}', 'ProductController', 'index');
 $router->get('/products/{any}/{any}/{id}', 'ProductController', 'show');
 $router->get('/products/search', 'ProductController', 'search');
 
+$router->get('/tag/{any}', 'TagController', 'show');
+
 $router->get('/cart', 'CartController', 'index');
 $router->post('/cart/add', 'CartController', 'add');
 $router->get('/cart/remove/{any}', 'CartController', 'remove');

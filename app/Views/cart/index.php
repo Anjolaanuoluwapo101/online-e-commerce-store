@@ -104,11 +104,11 @@
                                 
                                 <!-- Cart Actions - Responsive Layout -->
                                 <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mt-4 gap-3">
-                                    <a href="/cart/clear" class="btn btn-warning px-4 py-2 w-100 w-md-auto">
+                                    <a href="/cart/clear" class="btn btn-outline-warning px-4 py-2 w-100 w-md-auto">
                                         <i class="fa fa-trash me-2"></i> Clear Cart
                                     </a>
                                     <div class="d-flex flex-column flex-sm-row gap-2 w-100 w-md-auto">
-                                        <a href="/products" class="btn btn-primary px-4 py-2 w-100 w-sm-auto">
+                                        <a href="/products" class="btn btn-outline-danger px-4 py-2 w-100 w-sm-auto">
                                             <i class="fa fa-shopping-bag me-2"></i> Continue Shopping
                                         </a>
                                         <button type="submit" class="btn btn-success px-4 py-2 w-100 w-sm-auto" id="checkoutButton">
@@ -138,3 +138,97 @@ document.getElementById('checkoutForm').addEventListener('submit', function(e) {
     return true;
 });
 </script>
+
+<style>
+/* Button Enhancement */
+.btn {
+    transition: all 0.3s ease;
+    border-radius: 50px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    border: none !important; /* Remove all button borders */
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    border: none !important; /* Ensure no border on hover */
+}
+
+.btn:active {
+    transform: translateY(-1px);
+    border: none !important; /* Ensure no border on active state */
+}
+
+/* Override Bootstrap outline buttons to remove blue borders */
+.btn-outline-primary {
+    border: 1px solid #f33f3f !important;
+    color: #f33f3f !important;
+}
+
+.btn-outline-primary:hover {
+    background-color: #f33f3f !important;
+    border: 1px solid #f33f3f !important;
+    box-shadow: 0 10px 20px rgba(243, 63, 63, 0.2) !important;
+}
+
+.btn-outline-danger {
+    border: 1px solid #f33f3f !important;
+    color: #f33f3f !important;
+}
+
+.btn-outline-danger:hover {
+    background-color: #f33f3f !important;
+    border: 1px solid #f33f3f !important;
+    box-shadow: 0 10px 20px rgba(243, 63, 63, 0.2) !important;
+}
+
+.btn-outline-warning {
+    border: 1px solid #ffc107 !important;
+    color: #ffc107 !important;
+}
+
+.btn-outline-warning:hover {
+    background-color: #ffc107 !important;
+    border: 1px solid #ffc107 !important;
+    box-shadow: 0 10px 20px rgba(255, 193, 7, 0.2) !important;
+}
+
+.btn-outline-secondary {
+    border: 1px solid #6c757d !important;
+    color: #6c757d !important;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #6c757d !important;
+    border: 1px solid #6c757d !important;
+    box-shadow: 0 10px 20px rgba(108, 117, 125, 0.2) !important;
+}
+
+/* Table Row Hover Effect */
+.hover-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .card-body {
+        padding: 1rem !important;
+    }
+    
+    .btn {
+        margin-bottom: 0.5rem;
+    }
+    
+    .table-responsive {
+        font-size: 0.9rem;
+    }
+}
+</style>
+</body>
+</html>

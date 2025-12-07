@@ -4,15 +4,18 @@ namespace App\Controllers;
 
 use App\Core\Controller;
 use App\Models\Product;
+use App\Models\Tag;
 
 class HomeController extends Controller
 {
     private $productModel;
+    private $tagModel;
 
     public function __construct()
     {
         parent::__construct();
         $this->productModel = new Product();
+        $this->tagModel = new Tag();
     }
 
     /**
@@ -26,6 +29,9 @@ class HomeController extends Controller
             // Get hottest products
             $products = $this->productModel->getHottest(6);
             
+            // Get tags with their products
+            $tagsWithProducts = $this->tagModel->getTagsWithProducts(4);
+            
             // Get cart item count
             $cartItemCount = 0;
             if (isset($_SESSION['XCart'])) {
@@ -34,6 +40,7 @@ class HomeController extends Controller
             
             $data = [
                 'products' => $products,
+                'tagsWithProducts' => $tagsWithProducts,
                 'cartItemCount' => $cartItemCount
             ];
             
@@ -51,6 +58,7 @@ class HomeController extends Controller
             // Render view with error message
             $data = [
                 'products' => [],
+                'tagsWithProducts' => [],
                 'cartItemCount' => $cartItemCount,
                 'error' => 'An error occurred while loading the page. Please try again later.'
             ];

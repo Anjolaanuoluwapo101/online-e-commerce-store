@@ -64,6 +64,95 @@ class Tag extends Model
     }
 
     /**
+     * Get tags with their associated products (limited number per tag)
+     * Only returns tags that have at least one product
+     * 
+     * @param int $limitProductsPerTag Number of products to fetch per tag
+     * @return array
+     */
+    public function getTagsWithProducts($limitProductsPerTag = 4)
+    {
+        // First get all tags that have at least one product
+        $sql = "SELECT t.*, COUNT(pt.product_id) as product_count 
+                FROM tags t 
+                JOIN product_tags pt ON t.id = pt.tag_id 
+                GROUP BY t.id, t.name, t.slug 
+                HAVING COUNT(pt.product_id) > 0 
+                ORDER BY t.name ASC";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        $tags = $stmt->fetchAll();
+        
+        // For each tag, get associated products
+        foreach ($tags as &$tag) {
+            $sql = "SELECT p.*, c.name as category_name, c.slug as category_slug 
+                    FROM products p 
+                    JOIN product_tags pt ON p.id = pt.product_id 
+                    JOIN categories c ON p.category_id = c.id 
+                    WHERE pt.tag_id = :tagId 
+                    LIMIT :limit";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindValue(':tagId', $tag['id'], \PDO::PARAM_INT);
+            $stmt->bindValue(':limit', $limitProductsPerTag, \PDO::PARAM_INT);
+            $stmt->execute();
+            $tag['products'] = $stmt->fetchAll();
+        }
+        
+        return $tags;
+    }
+    
+    /**
+     * Get products by tag ID with pagination
+     * 
+     * @param int $tagId Tag ID
+     * @param int $limit Number of products to retrieve
+     * @param int $offset Offset for pagination
+     * @return array
+     */
+    public function getProductsByTagId($tagId, $limit = null, $offset = 0)
+    {
+        $sql = "SELECT p.*, c.name as category_name, c.slug as category_slug 
+                FROM products p 
+                JOIN product_tags pt ON p.id = pt.product_id 
+                JOIN categories c ON p.category_id = c.id 
+                WHERE pt.tag_id = :tagId 
+                ORDER BY p.created_at DESC";
+        
+        if ($limit !== null) {
+            $sql .= " LIMIT :limit OFFSET :offset";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindValue(':tagId', (int)$tagId, \PDO::PARAM_INT);
+            $stmt->bindValue(':limit', (int)$limit, \PDO::PARAM_INT);
+            $stmt->bindValue(':offset', (int)$offset, \PDO::PARAM_INT);
+            $stmt->execute();
+        } else {
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindValue(':tagId', (int)$tagId, \PDO::PARAM_INT);
+            $stmt->execute();
+        }
+        
+        return $stmt->fetchAll();
+    }
+    
+    /**
+     * Get count of products by tag ID
+     * 
+     * @param int $tagId Tag ID
+     * @return int
+     */
+    public function getProductCountByTagId($tagId)
+    {
+        $sql = "SELECT COUNT(*) as count 
+                FROM products p 
+                JOIN product_tags pt ON p.id = pt.product_id 
+                WHERE pt.tag_id = :tagId";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute(['tagId' => $tagId]);
+        $result = $stmt->fetch();
+        return $result['count'];
+    }
+    
+    /**
      * Create a new tag
      * 
      * @param array $data Tag data

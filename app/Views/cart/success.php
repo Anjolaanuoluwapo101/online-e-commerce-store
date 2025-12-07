@@ -24,7 +24,7 @@
                     </div>
                     
                     <div class="mt-4">
-                        <a href="/products" class="btn btn-primary btn-lg me-2">
+                        <a href="/products" class="btn btn-outline-danger btn-lg me-2">
                             <i class="fa fa-shopping-bag me-2"></i> Continue Shopping
                         </a>
                         <a href="/" class="btn btn-outline-secondary btn-lg">
@@ -36,3 +36,65 @@
         </div>
     </div>
 </div>
+
+<style>
+/* Button Enhancement */
+.btn {
+    transition: all 0.3s ease;
+    border-radius: 50px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    border: none !important; /* Remove all button borders */
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    border: none !important; /* Ensure no border on hover */
+}
+
+.btn:active {
+    transform: translateY(-1px);
+    border: none !important; /* Ensure no border on active state */
+}
+
+/* Override Bootstrap outline buttons to remove blue borders */
+.btn-outline-danger {
+    border: 1px solid #f33f3f !important;
+    color: #f33f3f !important;
+}
+
+.btn-outline-danger:hover {
+    background-color: #f33f3f !important;
+    border: 1px solid #f33f3f !important;
+    box-shadow: 0 10px 20px rgba(243, 63, 63, 0.2) !important;
+}
+
+.btn-outline-secondary {
+    border: 1px solid #6c757d !important;
+    color: #6c757d !important;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #6c757d !important;
+    border: 1px solid #6c757d !important;
+    box-shadow: 0 10px 20px rgba(108, 117, 125, 0.2) !important;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .card-body {
+        padding: 1rem !important;
+    }
+    
+    .btn-lg {
+        margin-bottom: 0.5rem;
+        display: block;
+        width: 100%;
+    }
+    
+    .me-2 {
+        margin-right: 0.5rem !important;
+    }
+}
+</style>

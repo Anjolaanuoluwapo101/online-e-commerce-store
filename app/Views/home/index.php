@@ -17,7 +17,7 @@
     <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <div class="hero-slide" style="background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6)), url('/assets/images/slide_01.jpg') center/cover no-repeat; height: 100vh;">
+                <div class="hero-slide" style="background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6)), url('<?= R2_PUBLIC_BUCKET_URL.'/manwithbags.jpg'?>') center/cover no-repeat; height: 100vh;">
                     <div class="container h-100 d-flex align-items-center">
                         <div class="row w-100">
                             <div class="col-lg-8 mx-auto text-center">
@@ -37,7 +37,7 @@
                 </div>
             </div>
             <div class="carousel-item">
-                <div class="hero-slide" style="background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6)), url('/assets/images/slide_02.jpg') center/cover no-repeat; height: 100vh;">
+                <div class="hero-slide" style="background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6)), url('<?= R2_PUBLIC_BUCKET_URL.'/marketplace.jpg'?>') center/cover no-repeat; height: 100vh;">
                     <div class="container h-100 d-flex align-items-center">
                         <div class="row w-100">
                             <div class="col-lg-8 mx-auto text-center">
@@ -57,7 +57,7 @@
                 </div>
             </div>
             <div class="carousel-item">
-                <div class="hero-slide" style="background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6)), url('/assets/images/slide_03.jpg') center/cover no-repeat; height: 100vh;">
+                <div class="hero-slide" style="background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6)), url('<?= R2_PUBLIC_BUCKET_URL.'/pointingatlaptop.jpg'?>') center/cover no-repeat; height: 100vh;">
                     <div class="container h-100 d-flex align-items-center">
                         <div class="row w-100">
                             <div class="col-lg-8 mx-auto text-center">
@@ -67,7 +67,7 @@
                                     <!-- <a href="#features" class="btn btn-danger btn-lg px-5 py-3 me-3 mb-3 mb-md-0 smooth-scroll">
                                         <i class="fa fa-truck me-2"></i>Learn More
                                     </a> -->
-                                    <a href="/contact" class="btn btn-outline-light btn-lg px-5 py-3">
+                                    <a href="/contact" class="btn btn-danger btn-lg px-5 py-3">
                                         <i class="fa fa-phone me-2"></i>Contact Us
                                     </a>
                                 </div>
@@ -154,7 +154,7 @@
     <div class="section-header text-center mb-5">
         <h2 class="display-5 fw-bold mb-3">Hottest Products</h2>
         <p class="lead text-muted mb-4">Check out our most popular items loved by customers</p>
-        <a href="/products" class="btn btn-outline-primary btn-lg">View All Products</a>
+        <a href="/products" class="btn btn-outline-danger btn-lg">View All Products</a>
     </div>
     
     <div class="row g-4">
@@ -186,7 +186,7 @@
                                 <i class="fa fa-star text-warning"></i>
                                 <span class="small text-muted ms-1">(5.0)</span>
                             </div>
-                            <a href="/products/<?= $product['category_slug'] ?>/<?= urlencode($product['productname']) ?>/<?= $product['id'] ?>" class="btn btn-sm btn-outline-primary">
+                            <a href="/products/<?= $product['category_slug'] ?>/<?= urlencode($product['productname']) ?>/<?= $product['id'] ?>" class="btn btn-sm btn-outline-danger">
                                 <i class="fa fa-eye me-1"></i> View
                             </a>
                         </div>
@@ -196,6 +196,59 @@
         <?php endforeach; ?>
     </div>
 </div>
+
+<!-- Tags Section -->
+<?php if (isset($tagsWithProducts) && !empty($tagsWithProducts)): ?>
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 class="display-5 fw-bold mb-3">Shop by Tags</h2>
+                <p class="lead text-muted mb-4">Browse our products organized by categories and interests</p>
+            </div>
+        </div>
+        
+        <?php foreach ($tagsWithProducts as $tag): ?>
+            <?php if (!empty($tag['products'])): ?>
+                <div class="row mb-5 fade-in-element" style="opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out;">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h3 class="mb-0">
+                                <a href="/tag/<?= $tag['slug'] ?>" class="text-decoration-none text-dark">
+                                    <?= $tag['name'] ?>
+                                </a>
+                            </h3>
+                            <a href="/tag/<?= $tag['slug'] ?>" class="btn btn-outline-danger btn-sm rounded-pill px-3">View All</a>
+                        </div>
+                        
+                        <!-- Horizontal scrolling container -->
+                        <div class="horizontal-scroll-container" style="overflow-x: auto; scrollbar-width: thin; scrollbar-color: #f33f3f #f1f1f1;">
+                            <div class="d-flex" style="gap: 1.5rem; padding: 1rem 0.5rem;">
+                                <?php foreach ($tag['products'] as $product): ?>
+                                    <div class="card product-item shadow-sm hover-lift border-0 flex-shrink-0" style="width: 16rem; transition: all 0.3s ease;">
+                                        <a href="/products/<?= $product['category_slug'] ?>/<?= urlencode($product['productname']) ?>/<?= $product['id'] ?>">
+                                            <img src="<?= R2_PUBLIC_BUCKET_URL ?>/<?= $product['imagepath'] ?>" alt="<?= $product['productname'] ?>" class="card-img-top hover-zoom" style="height: 200px; object-fit: cover;">
+                                        </a>
+                                        <div class="card-body down-content p-3">
+                                            <a href="/products/<?= $product['category_slug'] ?>/<?= urlencode($product['productname']) ?>/<?= $product['id'] ?>" class="text-decoration-none">
+                                                <h5 class="card-title fs-6 mb-2"><?= $product['productname'] ?></h5>
+                                            </a>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <strong class="text-danger">₦<?= number_format($product['price']) ?></strong>
+                                                <div>
+                                                    <span class="badge bg-secondary"><?= $product['brand'] ?></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php endif; ?>
+        <?php endforeach; ?>
+    </div>
+<?php endif; ?>
 
 <!-- About Section -->
 <div class="about-section py-5 position-relative overflow-hidden" style="background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('<?= R2_PUBLIC_BUCKET_URL ?>/banner2.jpg') center/cover no-repeat;" id="aboutSection">
@@ -222,7 +275,7 @@
                     </div>
                 </div>
                 
-                <a href="/about" class="btn btn-light btn-lg px-4 py-2 mt-3">Read More</a>
+                <a href="/about" class="btn btn-light btn-lg px-4 py-2 mt-3 rounded-pill">Read More</a>
             </div>
         </div>
     </div>
@@ -311,15 +364,77 @@
     border-radius: 50px;
     font-weight: 600;
     letter-spacing: 0.5px;
+    border: none !important; /* Remove all button borders */
 }
 
 .btn:hover {
     transform: translateY(-3px);
     box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    border: none !important; /* Ensure no border on hover */
 }
 
 .btn:active {
     transform: translateY(-1px);
+    border: none !important; /* Ensure no border on active state */
+}
+
+/* Override Bootstrap outline buttons to remove blue borders */
+.btn-outline-primary {
+    border: 1px solid #f33f3f !important;
+    color: #f33f3f !important;
+}
+
+.btn-outline-primary:hover {
+    background-color: #f33f3f !important;
+    border: 1px solid #f33f3f !important;
+    box-shadow: 0 10px 20px rgba(243, 63, 63, 0.2) !important;
+}
+
+.btn-outline-danger {
+    border: 1px solid #f33f3f !important;
+    color: #f33f3f !important;
+}
+
+.btn-outline-danger:hover {
+    background-color: #f33f3f !important;
+    border: 1px solid #f33f3f !important;
+    box-shadow: 0 10px 20px rgba(243, 63, 63, 0.2) !important;
+}
+
+.btn-outline-light {
+    border: 1px solid rgba(255, 255, 255, 0.5) !important;
+    color: white !important;
+}
+
+.btn-outline-light:hover {
+    background-color: white !important;
+    color: #212529 !important;
+    border: 1px solid white !important;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Horizontal Scroll Container */
+.horizontal-scroll-container {
+    scrollbar-width: thin;
+    scrollbar-color: #f33f3f #f1f1f1;
+}
+
+.horizontal-scroll-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.horizontal-scroll-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.horizontal-scroll-container::-webkit-scrollbar-thumb {
+    background: #f33f3f;
+    border-radius: 4px;
+}
+
+.horizontal-scroll-container::-webkit-scrollbar-thumb:hover {
+    background: #d73737;
 }
 
 /* Responsive Adjustments */
@@ -360,6 +475,11 @@
     
     .features-section {
         padding: 2rem 0;
+    }
+    
+    /* Adjust horizontal scroll for mobile */
+    .horizontal-scroll-container .card {
+        width: 14rem;
     }
 }
 
@@ -405,7 +525,11 @@
     border-radius: 2px;
 }
 
-
+.fade-in-element {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
 </style>
 
 <script>

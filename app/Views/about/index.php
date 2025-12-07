@@ -4,8 +4,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <h1 class="display-3 fw-bold mb-4 animate__animated animate__fadeInDown">About Shop Convenient</h1>
-                    <p class="lead fs-4 animate__animated animate__fadeInUp">Your trusted partner for quality products and exceptional service</p>
+                    <h1 class="display-3 fw-bold mb-4 animate__animated animate__fadeInDown" style="color: rgba(255, 255, 255, 1);">About Shop Convenient</h1>
+                    <p class="lead fs-4 animate__animated animate__fadeInUp" style="color: rgba(255, 255, 255, 0.7);">Your trusted partner for quality products and exceptional service</p>
                 </div>
             </div>
         </div>
@@ -34,13 +34,13 @@
             </div>
         <?php endif; ?>
         
-        <div class="row mb-5">
+        <div class="row mb-5 fade-in-element" style="opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out;">
             <div class="col-12">
-                <div class="card border-0 rounded-3 shadow-lg overflow-hidden">
-                    <div class="card-body p-5">
-                        <div class="row g-5">
+                <div class="card border-0 rounded-3 shadow-sm overflow-hidden">
+                    <div class="card-body p-4 p-lg-5">
+                        <div class="row g-4 g-lg-5">
                             <div class="col-lg-6">
-                                <div class="mb-5">
+                                <div class="mb-4 mb-lg-5">
                                     <h2 class="display-5 fw-bold mb-4 text-danger">Our Story</h2>
                                     <p class="lead mb-4">We are dedicated to providing quality products with exceptional customer service.</p>
                                     
@@ -49,9 +49,9 @@
                                     <p class="mb-4">We hope you enjoy our products as much as we enjoy offering them to you. If you have any questions or comments, please don't hesitate to contact us.</p>
                                 </div>
                                 
-                                <div class="row mt-5">
-                                    <div class="col-md-6 mb-4">
-                                        <div class="card border-0 rounded-3 shadow-sm h-100 hover-lift" style="background-color: #f8d7da;">
+                                <div class="row mt-4 mt-lg-5 g-4">
+                                    <div class="col-md-6">
+                                        <div class="card border-0 rounded-3 h-100 hover-lift" style="background-color: #f8f9fa;">
                                             <div class="card-body p-4">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="icon-wrapper bg-white text-danger rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
@@ -64,8 +64,8 @@
                                         </div>
                                     </div>
                                     
-                                    <div class="col-md-6 mb-4">
-                                        <div class="card border-0 rounded-3 shadow-sm h-100 hover-lift" style="background-color: #f8d7da;">
+                                    <div class="col-md-6">
+                                        <div class="card border-0 rounded-3 h-100 hover-lift" style="background-color: #f8f9fa;">
                                             <div class="card-body p-4">
                                                 <div class="d-flex align-items-center mb-3">
                                                     <div class="icon-wrapper bg-white text-danger rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
@@ -82,7 +82,7 @@
                             
                             <div class="col-lg-6">
                                 <div class="position-relative h-100">
-                                    <div class="bg-light rounded-3 p-4 h-100 d-flex flex-column justify-content-center" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+                                    <div class="bg-light rounded-3 p-4 p-lg-5 h-100 d-flex flex-column justify-content-center" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
                                         <h3 class="mb-4">Why Choose Us?</h3>
                                         
                                         <div class="d-flex mb-4">
@@ -143,10 +143,10 @@
             </div>
         </div>
         
-        <div class="row g-4 mb-5">
+        <div class="row g-4 mb-5 fade-in-element" style="opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out;">
             <div class="col-md-6">
-                <div class="card border-0 rounded-3 shadow-lg h-100 hover-lift">
-                    <div class="card-header py-4 text-center" style="background-color: #f8d7da;">
+                <div class="card border-0 rounded-3 h-100 hover-lift">
+                    <div class="card-header py-4 text-center" style="background-color: #f8f9fa;">
                         <i class="fa fa-bullseye fa-2x mb-3 text-danger"></i>
                         <h3 class="mb-0 text-danger">Our Mission</h3>
                     </div>
@@ -157,8 +157,8 @@
             </div>
             
             <div class="col-md-6">
-                <div class="card border-0 rounded-3 shadow-lg h-100 hover-lift">
-                    <div class="card-header py-4 text-center" style="background-color: #f8d7da;">
+                <div class="card border-0 rounded-3 h-100 hover-lift">
+                    <div class="card-header py-4 text-center" style="background-color: #f8f9fa;">
                         <i class="fa fa-eye fa-2x mb-3 text-danger"></i>
                         <h3 class="mb-0 text-danger">Our Vision</h3>
                     </div>
@@ -169,15 +169,15 @@
             </div>
         </div>
         
-        <div class="row mb-5">
+        <div class="row mb-5 fade-in-element" style="opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out;">
             <div class="col-12 text-center py-5">
                 <h2 class="display-4 fw-bold mb-4">Meet Our Developer</h2>
                 <p class="lead mb-5">The talented individual behind this platform</p>
                 
                 <div class="row justify-content-center">
                     <div class="col-lg-6">
-                        <div class="card border-0 rounded-3 shadow-lg hover-lift" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
-                            <div class="card-body p-5 text-center">
+                        <div class="card border-0 rounded-3 hover-lift" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+                            <div class="card-body p-4 p-lg-5 text-center">
                                 <div class="developer-avatar bg-light rounded-circle mx-auto mb-4 d-flex align-items-center justify-content-center" style="width: 150px; height: 150px; border: 3px solid #f33f3f;">
                                     <i class="fa fa-user fa-3x text-danger"></i>
                                 </div>
@@ -192,3 +192,77 @@
         </div>
     </div>
 </div>
+
+<style>
+@media (max-width: 768px) {
+    .about-hero {
+        min-height: 300px;
+    }
+    
+    .display-3 {
+        font-size: 2rem;
+    }
+    
+    .display-4 {
+        font-size: 1.75rem;
+    }
+    
+    .display-5 {
+        font-size: 1.5rem;
+    }
+    
+    .card-body {
+        padding: 1.5rem !important;
+    }
+    
+    .p-5 {
+        padding: 1.5rem !important;
+    }
+    
+    .rounded-3 {
+        border-radius: 1rem !important;
+    }
+    
+    .shadow-lg {
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.075) !important;
+    }
+}
+
+.hover-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+}
+
+.fade-in-element {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+</style>
+
+<script>
+// Fade in elements when they come into view
+function checkFadeElements() {
+    const fadeElements = document.querySelectorAll('.fade-in-element');
+    fadeElements.forEach(element => {
+        const elementTop = element.getBoundingClientRect().top;
+        const elementVisible = 150;
+        
+        if (elementTop < window.innerHeight - elementVisible) {
+            element.style.opacity = '1';
+            element.style.transform = 'translateY(0)';
+        }
+    });
+}
+
+// Check on scroll and initial load
+window.addEventListener('scroll', checkFadeElements);
+window.addEventListener('load', checkFadeElements);
+
+// Initial check in case element is already in view
+setTimeout(checkFadeElements, 100);
+</script>

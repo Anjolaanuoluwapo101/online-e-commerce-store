@@ -20,9 +20,9 @@
                 <div class="hero-slide" style="background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6)), url('/assets/images/slide_01.jpg') center/cover no-repeat; height: 100vh;">
                     <div class="container h-100 d-flex align-items-center">
                         <div class="row w-100">
-                            <div class="col-lg-8 mx-auto text-center text-white">
-                                <h1 class="display-2 fw-bold mb-4 animate__animated animate__fadeInDown">Premium Shopping Experience</h1>
-                                <p class="lead fs-4 mb-5 animate__animated animate__fadeInUp">Discover amazing products at unbeatable prices with fast delivery and exceptional service</p>
+                            <div class="col-lg-8 mx-auto text-center">
+                                <h1 class="display-2 fw-bold mb-4 animate__animated animate__fadeInDown" style="color: rgba(255, 255, 255, 1);">Premium Shopping Experience</h1>
+                                <p class="lead fs-4 mb-5 animate__animated animate__fadeInUp" style="color: rgba(255, 255, 255, 0.65);">Discover amazing products at unbeatable prices with fast delivery and exceptional service</p>
                                 <div class="animate__animated animate__fadeInUp">
                                     <a href="/products" class="btn btn-danger btn-lg px-5 py-3 me-3 mb-3 mb-md-0">
                                         <i class="fa fa-shopping-bag me-2"></i>Start Shopping
@@ -40,9 +40,9 @@
                 <div class="hero-slide" style="background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6)), url('/assets/images/slide_02.jpg') center/cover no-repeat; height: 100vh;">
                     <div class="container h-100 d-flex align-items-center">
                         <div class="row w-100">
-                            <div class="col-lg-8 mx-auto text-center text-white">
-                                <h2 class="display-3 fw-bold mb-4 animate__animated animate__fadeInDown">Quality You Can Trust</h2>
-                                <p class="lead fs-4 mb-5 animate__animated animate__fadeInUp">Handpicked products from trusted brands with guaranteed authenticity</p>
+                            <div class="col-lg-8 mx-auto text-center">
+                                <h2 class="display-3 fw-bold mb-4 animate__animated animate__fadeInDown" style="color: rgba(255, 255, 255, 1);">Quality You Can Trust</h2>
+                                <p class="lead fs-4 mb-5 animate__animated animate__fadeInUp" style="color: rgba(255, 255, 255, 0.65);">Handpicked products from trusted brands with guaranteed authenticity</p>
                                 <div class="animate__animated animate__fadeInUp">
                                     <a href="/products" class="btn btn-danger btn-lg px-5 py-3 me-3 mb-3 mb-md-0">
                                         <i class="fa fa-certificate me-2"></i>Shop Quality
@@ -60,9 +60,9 @@
                 <div class="hero-slide" style="background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6)), url('/assets/images/slide_03.jpg') center/cover no-repeat; height: 100vh;">
                     <div class="container h-100 d-flex align-items-center">
                         <div class="row w-100">
-                            <div class="col-lg-8 mx-auto text-center text-white">
-                                <h2 class="display-3 fw-bold mb-4 animate__animated animate__fadeInDown">Fast & Secure Delivery</h2>
-                                <p class="lead fs-4 mb-5 animate__animated animate__fadeInUp">Get your orders delivered quickly and securely to your doorstep</p>
+                            <div class="col-lg-8 mx-auto text-center">
+                                <h2 class="display-3 fw-bold mb-4 animate__animated animate__fadeInDown" style="color: rgba(255, 255, 255, 1);">Fast & Secure Delivery</h2>
+                                <p class="lead fs-4 mb-5 animate__animated animate__fadeInUp" style="color: rgba(255, 255, 255, 0.65);">Get your orders delivered quickly and securely to your doorstep</p>
                                 <div class="animate__animated animate__fadeInUp">
                                     <!-- <a href="#features" class="btn btn-danger btn-lg px-5 py-3 me-3 mb-3 mb-md-0 smooth-scroll">
                                         <i class="fa fa-truck me-2"></i>Learn More
@@ -97,10 +97,7 @@
     </div>
     
     <!-- Scroll Down Indicator -->
-    <div class="scroll-down-indicator position-absolute bottom-0 start-50 translate-middle-x mb-4 text-white text-center animate__animated animate__bounce animate__infinite">
-        <i class="fa fa-chevron-down fa-2x"></i>
-        <p class="mt-2 small">Scroll Down</p>
-    </div>
+    <!-- Removed as per user request -->
 </div>
 
 <!-- Features Section -->
@@ -115,7 +112,7 @@
             <div class="col-lg-10 mx-auto">
                 <div class="row g-4">
                     <div class="col-md-4">
-                        <div class="feature-card bg-white p-4 rounded-3 shadow-lg h-100 text-center position-relative overflow-hidden" style="transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); border: none;">
+                        <div class="feature-card bg-white p-4 rounded-4 shadow-lg h-100 text-center position-relative overflow-hidden" style="transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); border: none;">
                             <div class="feature-number text-danger fw-bold display-3 mb-3" style="font-size: 3.5rem; opacity: 0.1; position: absolute; top: 10px; right: 20px;">01</div>
                             <div class="feature-content position-relative">
                                 <h3 class="h4 mb-3 fw-bold" style="color: #f33f3f;">Free Shipping</h3>
@@ -126,7 +123,7 @@
                     </div>
                     
                     <div class="col-md-4">
-                        <div class="feature-card bg-white p-4 rounded-3 shadow-lg h-100 text-center position-relative overflow-hidden" style="transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); border: none;">
+                        <div class="feature-card bg-white p-4 rounded-4 shadow-lg h-100 text-center position-relative overflow-hidden" style="transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); border: none;">
                             <div class="feature-number text-danger fw-bold display-3 mb-3" style="font-size: 3.5rem; opacity: 0.1; position: absolute; top: 10px; right: 20px;">02</div>
                             <div class="feature-content position-relative">
                                 <h3 class="h4 mb-3 fw-bold" style="color: #f33f3f;">Secure Payments</h3>
@@ -137,7 +134,7 @@
                     </div>
                     
                     <div class="col-md-4">
-                        <div class="feature-card bg-white p-4 rounded-3 shadow-lg h-100 text-center position-relative overflow-hidden" style="transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); border: none;">
+                        <div class="feature-card bg-white p-4 rounded-4 shadow-lg h-100 text-center position-relative overflow-hidden" style="transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); border: none;">
                             <div class="feature-number text-danger fw-bold display-3 mb-3" style="font-size: 3.5rem; opacity: 0.1; position: absolute; top: 10px; right: 20px;">03</div>
                             <div class="feature-content position-relative">
                                 <h3 class="h4 mb-3 fw-bold" style="color: #f33f3f;">24/7 Support</h3>
@@ -251,17 +248,13 @@
     transition: transform 1s ease-in-out;
 }
 
-.scroll-down-indicator {
-    cursor: pointer;
-    animation-duration: 2s;
-}
-
 /* Feature Cards Enhancement */
 .feature-card {
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     border: none;
     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
     transform: translateY(0);
+    border-radius: 1.5rem !important; /* More rounded corners */
 }
 
 .feature-card:hover {
@@ -280,6 +273,7 @@
     transform: scaleX(0);
     transform-origin: left;
     transition: transform 0.4s ease;
+    border-radius: 1.5rem 1.5rem 0 0 !important; /* Match card rounding */
 }
 
 .feature-card:hover::before {
@@ -331,7 +325,8 @@
 /* Responsive Adjustments */
 @media (max-width: 768px) {
     .hero-section {
-        padding: 3rem 0;
+        padding: 0;
+        margin-top: 0 !important;
     }
     
     .display-4 {
@@ -344,6 +339,7 @@
     
     .feature-card {
         margin-bottom: 1.5rem;
+        border-radius: 1.25rem !important; /* Slightly less rounding on mobile */
     }
     
     .hero-slide {
@@ -448,11 +444,5 @@
         });
     });
     
-    // Scroll down indicator
-    document.querySelector('.scroll-down-indicator').addEventListener('click', function() {
-        window.scrollTo({
-            top: window.innerHeight,
-            behavior: 'smooth'
-        });
-    });
+    // Scroll down indicator - Removed as per user request
 </script>

@@ -81,8 +81,8 @@ class Cart
      */
     public function removeItem($refId)
     {
-        session_name($this->sessionKey);
-        session_start();
+        // session_name($this->sessionKey);
+        // session_start();
         unset($_SESSION[$this->sessionKey][$refId]);
         session_write_close();
     }
@@ -94,8 +94,8 @@ class Cart
      */
     public function clear()
     {
-        session_name($this->sessionKey);
-        session_start();
+        // session_name($this->sessionKey);
+        // session_start();
         $_SESSION[$this->sessionKey] = [];
         session_write_close();
     }

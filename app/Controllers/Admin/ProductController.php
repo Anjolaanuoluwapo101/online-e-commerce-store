@@ -74,9 +74,11 @@ class ProductController extends Controller
     {
         try {
             $categories = $this->categoryModel->getAll();
+            $tags = (new \App\Models\Tag())->getAll(); // Get all existing tags
             
             $data = [
                 'categories' => $categories,
+                'tags' => $tags, // Pass tags to the view
                 'nameError' => '',
                 'imageError' => '',
                 'successMessage' => ''
@@ -89,10 +91,12 @@ class ProductController extends Controller
             
             // Get categories for the form
             $categories = $this->categoryModel->getAll();
+            $tags = (new \App\Models\Tag())->getAll(); // Get all existing tags
             
             // Render view with error message
             $data = [
                 'categories' => $categories,
+                'tags' => $tags, // Pass tags to the view
                 'nameError' => '',
                 'imageError' => '',
                 'successMessage' => '',
@@ -217,6 +221,57 @@ class ProductController extends Controller
                     
                     $productId = $this->productModel->create($data);
                     if ($productId) {
+                        // Handle product tags if provided
+                        if ($this->post('tags')) {
+                            $tagModel = new \App\Models\Tag();
+                            $tagsInput = trim($this->post('tags'));
+                            if (!empty($tagsInput)) {
+                                $tagNames = array_map('trim', explode(',', $tagsInput));
+                                $tagIds = [];
+                                
+                                foreach ($tagNames as $tagName) {
+                                    if (!empty($tagName)) {
+                                        // Check if tag already exists
+                                        $existingTag = null;
+                                        // Get all tags and check manually since there's no getByName method
+                                        $allTags = $tagModel->getAll();
+                                        foreach ($allTags as $tag) {
+                                            if (strtolower($tag['name']) === strtolower($tagName)) {
+                                                $existingTag = $tag;
+                                                break;
+                                            }
+                                        }
+                                        
+                                        if ($existingTag) {
+                                            $tagIds[] = $existingTag['id'];
+                                        } else {
+                                            // Create new tag
+                                            $tagData = [
+                                                'name' => $tagName
+                                            ];
+                                            $tagModel->create($tagData);
+                                            // Get the newly created tag to get its ID
+                                            $allTags = $tagModel->getAll();
+                                            foreach ($allTags as $tag) {
+                                                if (strtolower($tag['name']) === strtolower($tagName)) {
+                                                    $tagIds[] = $tag['id'];
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                
+                                // Attach tags to product
+                                if (!empty($tagIds)) {
+                                    foreach ($tagIds as $tagId) {
+                                        $productTagModel = new \App\Models\ProductTag();
+                                        $productTagModel->attachTag($productId, $tagId);
+                                    }
+                                }
+                            }
+                        }
+                        
                         $successMessage = "Product added successfully!";
                         // Clear old data from session on success
                         unset($_SESSION['oldProductData']);
@@ -260,10 +315,14 @@ class ProductController extends Controller
             }
             
             $categories = $this->categoryModel->getAll();
+            $tags = (new \App\Models\Tag())->getAll(); // Get all existing tags
+            $productTags = $this->productModel->getTags($id); // Get tags for this product
             
             $data = [
                 'product' => $product,
-                'categories' => $categories
+                'categories' => $categories,
+                'tags' => $tags, // Pass all tags to the view
+                'productTags' => $productTags // Pass product's current tags to the view
             ];
             
             $this->view->renderWithLayout('admin/products/edit', $data, 'layouts/admin');
@@ -273,11 +332,14 @@ class ProductController extends Controller
             
             // Get categories for the form
             $categories = $this->categoryModel->getAll();
+            $tags = (new \App\Models\Tag())->getAll(); // Get all existing tags
             
             // Render view with error message
             $data = [
                 'product' => null,
                 'categories' => $categories,
+                'tags' => $tags, // Pass tags to the view
+                'productTags' => [], // No product tags if there's an error
                 'error' => 'An error occurred while loading the product edit form. Please try again later.'
             ];
             
@@ -314,6 +376,61 @@ class ProductController extends Controller
             
             // Update product
             if ($this->productModel->updateProduct($id, $data)) {
+                // Handle product tags if provided
+                if ($this->post('tags') !== null) {
+                    $tagModel = new \App\Models\Tag();
+                    $tagsInput = trim($this->post('tags'));
+                    
+                    // First, detach all existing tags for this product
+                    $productTagModel = new \App\Models\ProductTag();
+                    $productTagModel->detachAllTags($id);
+                    
+                    if (!empty($tagsInput)) {
+                        $tagNames = array_map('trim', explode(',', $tagsInput));
+                        $tagIds = [];
+                        
+                        foreach ($tagNames as $tagName) {
+                            if (!empty($tagName)) {
+                                // Check if tag already exists
+                                $existingTag = null;
+                                // Get all tags and check manually since there's no getByName method
+                                $allTags = $tagModel->getAll();
+                                foreach ($allTags as $tag) {
+                                    if (strtolower($tag['name']) === strtolower($tagName)) {
+                                        $existingTag = $tag;
+                                        break;
+                                    }
+                                }
+                                
+                                if ($existingTag) {
+                                    $tagIds[] = $existingTag['id'];
+                                } else {
+                                    // Create new tag
+                                    $tagData = [
+                                        'name' => $tagName
+                                    ];
+                                    $tagModel->create($tagData);
+                                    // Get the newly created tag to get its ID
+                                    $allTags = $tagModel->getAll();
+                                    foreach ($allTags as $tag) {
+                                        if (strtolower($tag['name']) === strtolower($tagName)) {
+                                            $tagIds[] = $tag['id'];
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        
+                        // Attach tags to product
+                        if (!empty($tagIds)) {
+                            foreach ($tagIds as $tagId) {
+                                $productTagModel->attachTag($id, $tagId);
+                            }
+                        }
+                    }
+                }
+                
                 $this->redirect("/admin/products/{$id}/edit");
             } else {
                 echo "Error updating product";

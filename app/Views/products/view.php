@@ -22,7 +22,7 @@
         </div>
     <?php endif; ?>
     
-    <div class="row">
+    <div class="row fade-in-element" style="opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out;">
         <div class="col-12">
             <div class="card shadow-sm">
                 <div class="card-header bg-dark text-white py-3">
@@ -115,6 +115,44 @@
     </div>
 </div>
 
+<style>
+@media (max-width: 768px) {
+    .card-body {
+        padding: 1rem !important;
+    }
+    
+    .img-fluid {
+        max-height: 250px !important;
+    }
+    
+    .h3 {
+        font-size: 1.5rem;
+    }
+    
+    .h5 {
+        font-size: 1.1rem;
+    }
+    
+    .btn-lg {
+        padding: 0.5rem 1rem;
+    }
+    
+    .input-group {
+        max-width: 100% !important;
+    }
+}
+
+.shadow {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+}
+
+.fade-in-element {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+</style>
+
 <script>
 function upvote() {
     var xhttp = new XMLHttpRequest();
@@ -134,4 +172,25 @@ function upvote() {
     xhttp.open("GET", "/upvote/<?= $product['category_slug'] ?? '' ?>/<?= isset($product) ? urlencode($product['productname']) : '' ?>/<?= $product['id'] ?? '' ?>", true);
     xhttp.send();
 }
+
+// Fade in elements when they come into view
+function checkFadeElements() {
+    const fadeElements = document.querySelectorAll('.fade-in-element');
+    fadeElements.forEach(element => {
+        const elementTop = element.getBoundingClientRect().top;
+        const elementVisible = 150;
+        
+        if (elementTop < window.innerHeight - elementVisible) {
+            element.style.opacity = '1';
+            element.style.transform = 'translateY(0)';
+        }
+    });
+}
+
+// Check on scroll and initial load
+window.addEventListener('scroll', checkFadeElements);
+window.addEventListener('load', checkFadeElements);
+
+// Initial check in case element is already in view
+setTimeout(checkFadeElements, 100);
 </script>

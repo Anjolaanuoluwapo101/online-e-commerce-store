@@ -4,8 +4,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <h1 class="display-3 fw-bold mb-4 animate__animated animate__fadeInDown">Get In Touch</h1>
-                    <p class="lead fs-4 animate__animated animate__fadeInUp">We'd love to hear from you. Reach out to us anytime!</p>
+                    <h1 class="display-3 fw-bold mb-4 animate__animated animate__fadeInDown" style="color: rgba(255, 255, 255, 1);">Get In Touch</h1>
+                    <p class="lead fs-4 animate__animated animate__fadeInUp" style="color: rgba(255, 255, 255, 0.7);">We'd love to hear from you. Reach out to us anytime!</p>
                 </div>
             </div>
         </div>
@@ -30,13 +30,13 @@
             </div>
         <?php endif; ?>
         
-        <div class="row mb-5">
+        <div class="row mb-5 fade-in-element" style="opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out;">
             <div class="col-12">
-                <div class="card border-0 rounded-3 shadow-lg overflow-hidden">
+                <div class="card border-0 rounded-3 shadow-sm overflow-hidden">
                     <div class="card-body p-0">
                         <div class="row g-0">
                             <div class="col-lg-7">
-                                <div class="p-5">
+                                <div class="p-4 p-lg-5">
                                     <h2 class="display-5 fw-bold mb-4 text-danger">Send us a Message</h2>
                                     
                                     <!-- Success Message -->
@@ -80,7 +80,7 @@
                                 </div>
                             </div>
                             
-                            <div class="col-lg-5 bg-light d-flex flex-column justify-content-center p-5">
+                            <div class="col-lg-5 bg-light d-flex flex-column justify-content-center p-4 p-lg-5 fade-in-element" style="opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out;">
                                 <h3 class="mb-4">Contact Information</h3>
                                 
                                 <div class="d-flex mb-4 hover-lift">
@@ -147,9 +147,9 @@
             </div>
         </div>
         
-        <div class="row mb-5">
+        <div class="row mb-5 fade-in-element" style="opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out;">
             <div class="col-12">
-                <div class="card border-0 rounded-3 shadow-lg overflow-hidden">
+                <div class="card border-0 rounded-3 shadow-sm overflow-hidden">
                     <div class="card-header bg-dark text-white py-4 text-center">
                         <h3 class="mb-0">Find Us on the Map</h3>
                     </div>
@@ -163,6 +163,71 @@
         </div>
     </div>
 </div>
+
+<style>
+@media (max-width: 992px) {
+    .contact-hero {
+        min-height: 300px;
+    }
+    
+    .display-3 {
+        font-size: 2rem;
+    }
+    
+    .display-5 {
+        font-size: 1.75rem;
+    }
+    
+    .p-5 {
+        padding: 1.5rem !important;
+    }
+    
+    .card-body {
+        padding: 1.5rem !important;
+    }
+    
+    .rounded-3 {
+        border-radius: 1rem !important;
+    }
+    
+    .shadow-lg {
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.075) !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .g-0 {
+        --bs-gutter-x: 1rem;
+    }
+    
+    .p-5 {
+        padding: 1rem !important;
+    }
+    
+    .form-control-lg {
+        padding: 0.75rem 1rem !important;
+    }
+    
+    .btn-lg {
+        padding: 0.75rem 1rem !important;
+    }
+}
+
+.hover-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+}
+
+.fade-in-element {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+</style>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -226,4 +291,25 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+// Fade in elements when they come into view
+function checkFadeElements() {
+    const fadeElements = document.querySelectorAll('.fade-in-element');
+    fadeElements.forEach(element => {
+        const elementTop = element.getBoundingClientRect().top;
+        const elementVisible = 150;
+        
+        if (elementTop < window.innerHeight - elementVisible) {
+            element.style.opacity = '1';
+            element.style.transform = 'translateY(0)';
+        }
+    });
+}
+
+// Check on scroll and initial load
+window.addEventListener('scroll', checkFadeElements);
+window.addEventListener('load', checkFadeElements);
+
+// Initial check in case element is already in view
+setTimeout(checkFadeElements, 100);
 </script>

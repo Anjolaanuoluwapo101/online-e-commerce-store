@@ -78,6 +78,75 @@
                                 <label for="description" class="form-label">Description</label>
                                 <textarea id="description" name="description" class="form-control" rows="5"><?php if (!empty($oldProductData['description'])): ?><?= $oldProductData['description'] ?><?php endif; ?></textarea>
                             </div>
+                            
+                            <!-- Tags Section -->
+                            <div class="mb-3">
+                                <label for="tags" class="form-label">Tags</label>
+                                <input type="text" id="tags" name="tags" class="form-control" placeholder="Enter tags separated by commas">
+                                <div class="form-text">Separate multiple tags with commas (e.g., electronics, smartphone, android)</div>
+                                
+                                <?php if (!empty($tags)): ?>
+                                <div class="mt-3">
+                                    <label class="form-label">Existing Tags (click to select/deselect):</label>
+                                    <div id="tag-list" class="d-flex flex-wrap gap-2">
+                                        <?php foreach ($tags as $tag): ?>
+                                            <span class="badge bg-secondary tag-item" style="cursor: pointer;" data-tag="<?= htmlspecialchars($tag['name']) ?>">
+                                                <?= htmlspecialchars($tag['name']) ?>
+                                            </span>
+                                        <?php endforeach; ?>
+                                    </div>
+                                </div>
+                                <?php endif; ?>
+                            </div>
+                            
+                            <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                const tagInput = document.getElementById('tags');
+                                const tagItems = document.querySelectorAll('.tag-item');
+                                
+                                // Handle tag selection/deselection
+                                tagItems.forEach(item => {
+                                    item.addEventListener('click', function() {
+                                        const tagName = this.getAttribute('data-tag');
+                                        const currentTags = tagInput.value.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0);
+                                        
+                                        // Check if tag is already selected
+                                        const tagIndex = currentTags.indexOf(tagName);
+                                        
+                                        if (tagIndex === -1) {
+                                            // Add tag
+                                            currentTags.push(tagName);
+                                            this.classList.remove('bg-secondary');
+                                            this.classList.add('bg-primary');
+                                        } else {
+                                            // Remove tag
+                                            currentTags.splice(tagIndex, 1);
+                                            this.classList.remove('bg-primary');
+                                            this.classList.add('bg-secondary');
+                                        }
+                                        
+                                        // Update input field
+                                        tagInput.value = currentTags.join(', ');
+                                    });
+                                });
+                                
+                                // Handle manual input changes to sync with tag items
+                                tagInput.addEventListener('input', function() {
+                                    const currentTags = this.value.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0);
+                                    
+                                    tagItems.forEach(item => {
+                                        const tagName = item.getAttribute('data-tag');
+                                        if (currentTags.includes(tagName)) {
+                                            item.classList.remove('bg-secondary');
+                                            item.classList.add('bg-primary');
+                                        } else {
+                                            item.classList.remove('bg-primary');
+                                            item.classList.add('bg-secondary');
+                                        }
+                                    });
+                                });
+                            });
+                            </script>
                         </div>
                     </div>
                     

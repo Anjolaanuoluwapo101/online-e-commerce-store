@@ -43,9 +43,15 @@ class DashboardController extends Controller
         } catch (\Exception $e) {
             // Log the error
             error_log('Admin\\DashboardController@index error: ' . $e->getMessage());
-            // Display a user-friendly error message
-            http_response_code(500);
-            echo 'An error occurred while loading the dashboard. Please try again later.';
+            
+            // Render view with error message
+            $data = [
+                'totalProducts' => 0,
+                'totalCategories' => 0,
+                'error' => 'An error occurred while loading the dashboard. Please try again later.'
+            ];
+            
+            $this->view->renderWithLayout('admin/dashboard/index', $data, 'layouts/admin');
         }
     }
 }

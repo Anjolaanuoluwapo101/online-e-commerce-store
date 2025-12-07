@@ -1,118 +1,167 @@
-<div class="container py-4 fade-in">
-    <div class="row">
-        <div class="col-12">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="/">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Contact Us</li>
-                </ol>
-            </nav>
+<div class="position-relative">
+    <!-- Hero Banner for Contact Page -->
+    <div class="contact-hero position-relative text-white text-center py-5" style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/assets/images/slide_03.jpg') center/cover no-repeat; min-height: 400px; display: flex; align-items: center;">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h1 class="display-3 fw-bold mb-4 animate__animated animate__fadeInDown">Get In Touch</h1>
+                    <p class="lead fs-4 animate__animated animate__fadeInUp">We'd love to hear from you. Reach out to us anytime!</p>
+                </div>
+            </div>
         </div>
     </div>
     
-    <div class="row mb-4 slide-up">
-        <div class="col-12">
-            <div class="card shadow-lg">
-                <div class="card-header bg-dark text-white py-4">
-                    <h1 class="mb-0 text-center">Get In Touch With Us</h1>
-                </div>
-                <div class="card-body py-4">
-                    <div class="row">
-                        <div class="mt-4 col-lg-8">
-                            <h3 class="mb-4">Send us a Message</h3>
-                            <!-- Success Message -->
-                            <div id="success-message" class="alert alert-success d-none" role="alert">
-                                Thank you for contacting us. We will get back to you soon.
+    <div class="container py-5 position-relative" style="margin-top: -50px; z-index: 10;">
+        <div class="row">
+            <div class="col-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb bg-white rounded-pill px-4 py-3 shadow-sm">
+                        <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Contact Us</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        
+        <?php if (isset($error) && $error): ?>
+            <div class="alert alert-danger alert-dismissible fade show rounded-pill px-4 py-3 shadow-sm" role="alert">
+                <i class="fa fa-exclamation-triangle me-2"></i><?= htmlspecialchars($error) ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif; ?>
+        
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="card border-0 rounded-3 shadow-lg overflow-hidden">
+                    <div class="card-body p-0">
+                        <div class="row g-0">
+                            <div class="col-lg-7">
+                                <div class="p-5">
+                                    <h2 class="display-5 fw-bold mb-4 text-danger">Send us a Message</h2>
+                                    
+                                    <!-- Success Message -->
+                                    <div id="success-message" class="alert alert-success d-none rounded-pill px-4 py-3" role="alert">
+                                        <i class="fa fa-check-circle me-2"></i>Thank you for contacting us. We will get back to you soon.
+                                    </div>
+                                    
+                                    <!-- Error Message -->
+                                    <div id="error-message" class="alert alert-danger d-none rounded-pill px-4 py-3" role="alert">
+                                        <i class="fa fa-exclamation-triangle me-2"></i>Sorry, there was an error sending your message. Please try again later.
+                                    </div>
+                                    
+                                    <div class="contact-form">
+                                        <form id="contact" action="/contact/submit" method="post">
+                                            <div class="mb-4">
+                                                <label for="name" class="form-label fw-bold">Full Name</label>
+                                                <input name="name" type="text" class="form-control form-control-lg rounded-pill px-4 py-3" id="name" placeholder="Enter your full name" required>
+                                            </div>
+                                            
+                                            <div class="mb-4">
+                                                <label for="email" class="form-label fw-bold">Email Address</label>
+                                                <input name="email" type="email" class="form-control form-control-lg rounded-pill px-4 py-3" id="email" placeholder="Enter your email address" required>
+                                            </div>
+                                            
+                                            <div class="mb-4">
+                                                <label for="subject" class="form-label fw-bold">Subject</label>
+                                                <input name="subject" type="text" class="form-control form-control-lg rounded-pill px-4 py-3" id="subject" placeholder="Enter subject" required>
+                                            </div>
+                                            
+                                            <div class="mb-5">
+                                                <label for="message" class="form-label fw-bold">Message</label>
+                                                <textarea name="message" rows="6" class="form-control rounded-3 px-4 py-3" id="message" placeholder="Enter your message" required></textarea>
+                                            </div>
+                                            
+                                            <button type="submit" id="form-submit" class="btn btn-danger btn-lg w-100 rounded-pill px-4 py-3 hover-lift">
+                                                <span id="button-text">Send Message</span>
+                                                <span id="button-spinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                             
-                            <!-- Error Message -->
-                            <div id="error-message" class="alert alert-danger d-none" role="alert">
-                                Sorry, there was an error sending your message. Please try again later.
-                            </div>
-                            
-                            <div class="contact-form">
-                                <form id="contact" action="/contact/submit" method="post">
-                                    <div class="mb-3">
-                                        <label for="name" class="form-label">Full Name</label>
-                                        <input name="name" type="text" class="form-control" id="name" placeholder="Enter your full name" required>
+                            <div class="col-lg-5 bg-light d-flex flex-column justify-content-center p-5">
+                                <h3 class="mb-4">Contact Information</h3>
+                                
+                                <div class="d-flex mb-4 hover-lift">
+                                    <div class="icon-wrapper text-danger rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px; flex-shrink: 0; border: 2px solid #dc3545;">
+                                        <i class="fa fa-map-marker"></i>
                                     </div>
-                                    
-                                    <div class="mb-3">
-                                        <label for="email" class="form-label">Email Address</label>
-                                        <input name="email" type="email" class="form-control" id="email" placeholder="Enter your email address" required>
+                                    <div>
+                                        <h5 class="mb-1">Our Location</h5>
+                                        <p class="mb-0 text-muted">123 Main Street, Lagos, Nigeria</p>
                                     </div>
-                                    
-                                    <div class="mb-3">
-                                        <label for="subject" class="form-label">Subject</label>
-                                        <input name="subject" type="text" class="form-control" id="subject" placeholder="Enter subject" required>
+                                </div>
+                                
+                                <div class="d-flex mb-4 hover-lift">
+                                    <div class="icon-wrapper text-danger rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px; flex-shrink: 0; border: 2px solid #dc3545;">
+                                        <i class="fa fa-phone"></i>
                                     </div>
-                                    
-                                    <div class="mb-4">
-                                        <label for="message" class="form-label">Message</label>
-                                        <textarea name="message" rows="6" class="form-control" id="message" placeholder="Enter your message" required></textarea>
+                                    <div>
+                                        <h5 class="mb-1">Phone Number</h5>
+                                        <p class="mb-0 text-muted">+234 801 234 5678</p>
                                     </div>
-                                    
-                                    <button type="submit" id="form-submit" class="btn btn-danger btn-lg px-4 py-2">
-                                        <span id="button-text">Send Message</span>
-                                        <span id="button-spinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
-                                    </button>
-                                </form>
+                                </div>
+                                
+                                <div class="d-flex mb-4 hover-lift">
+                                    <div class="icon-wrapper text-danger rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px; flex-shrink: 0; border: 2px solid #dc3545;">
+                                        <i class="fa fa-envelope"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="mb-1">Email Address</h5>
+                                        <p class="mb-0 text-muted">info@shopconv.com</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-flex mb-4 hover-lift">
+                                    <div class="icon-wrapper text-danger rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px; flex-shrink: 0; border: 2px solid #dc3545;">
+                                        <i class="fa fa-clock-o"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="mb-1">Working Hours</h5>
+                                        <p class="mb-0 text-muted">Mon-Fri: 9AM - 6PM<br>Sat-Sun: 10AM - 4PM</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-4">
+                                    <h5 class="mb-3">Follow Us</h5>
+                                    <div class="d-flex gap-3">
+                                        <a href="#" class="btn btn-outline-danger rounded-circle" style="width: 45px; height: 45px; padding: 0; display: flex; align-items: center; justify-content: center;">
+                                            <i class="fa fa-facebook-f"></i>
+                                        </a>
+                                        <a href="#" class="btn btn-outline-danger rounded-circle" style="width: 45px; height: 45px; padding: 0; display: flex; align-items: center; justify-content: center;">
+                                            <i class="fa fa-twitter"></i>
+                                        </a>
+                                        <a href="#" class="btn btn-outline-danger rounded-circle" style="width: 45px; height: 45px; padding: 0; display: flex; align-items: center; justify-content: center;">
+                                            <i class="fa fa-instagram"></i>
+                                        </a>
+                                        <a href="#" class="btn btn-outline-danger rounded-circle" style="width: 45px; height: 45px; padding: 0; display: flex; align-items: center; justify-content: center;">
+                                            <i class="fa fa-linkedin"></i>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <!-- A divider that only shows up on small screen  -->
-                        <hr class="d-lg-none my-4">
-                        <hr class="d-block d-md-none border-top border-primary my-4">
-                        <div class="mt-4 col-lg-4">
-                            <h3 class="mb-4">Our Information</h3>
-                            <div class="card mb-4 shadow-sm hover-lift">
-                                <div class="card-body">
-                                    <h5 class="card-title"><i class="fa fa-map-marker text-danger me-2"></i> Our Location</h5>
-                                    <p class="card-text">123 Main Street, Lagos, Nigeria</p>
-                                </div>
-                            </div>
-                            
-                            <div class="card mb-4 shadow-sm hover-lift">
-                                <div class="card-body">
-                                    <h5 class="card-title"><i class="fa fa-phone text-danger me-2"></i> Phone Number</h5>
-                                    <p class="card-text">+234 801 234 5678</p>
-                                </div>
-                            </div>
-                            
-                            <div class="card mb-4 shadow-sm hover-lift">
-                                <div class="card-body">
-                                    <h5 class="card-title"><i class="fa fa-envelope text-danger me-2"></i> Email Address</h5>
-                                    <p class="card-text">info@shopconv.com</p>
-                                </div>
-                            </div>
-                            
-                            <!-- <div class="text-center mt-4">
-                                <img src="/assets/images/send-message.jpg" class="img-fluid rounded shadow hover-zoom" alt="Send Message" style="max-height: 200px;">
-                            </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="card border-0 rounded-3 shadow-lg overflow-hidden">
+                    <div class="card-header bg-dark text-white py-4 text-center">
+                        <h3 class="mb-0">Find Us on the Map</h3>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="ratio ratio-21x9">
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3963.959575215783!2d3.3754303147707!3d6.527043595270791!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103b8b2ae68280c1%3A0xdc9e87a367c3d9cb!2sLagos%2C%20Nigeria!5e0!3m2!1sen!2sng!4v1650000000000!5m2!1sen!2sng" allowfullscreen="" loading="lazy"></iframe>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    
-    <!-- <div class="row slide-up">
-        <div class="col-12">
-            <div class="card shadow-lg">
-                <div class="card-header bg-light py-3">
-                    <h3 class="mb-0 text-center">Find Us on the Map</h3>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-12">
-                             <div id="map" class="text-center">
-                                <img src="/assets/images/map.jpg" alt="Map" class="img-fluid rounded shadow hover-zoom" style="max-height: 400px;">
-                            </div> 
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> -->
 </div>
 
 <script>

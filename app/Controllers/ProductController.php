@@ -74,10 +74,28 @@ class ProductController extends Controller
         } catch (\Exception $e) {
             // Log the error
             error_log('ProductController@index error: ' . $e->getMessage());
-            // Display a user-friendly error message
-            http_response_code(500);
-            echo $e->getMessage();
-            echo 'An error occurred while loading products. Please try again later.';
+            
+            // Get all categories for filter
+            $categories = $this->categoryModel->getAll();
+            
+            // Get cart item count
+            $cartItemCount = 0;
+            if (isset($_SESSION['XCart'])) {
+                $cartItemCount = count($_SESSION['XCart']);
+            }
+            
+            // Render view with error message
+            $data = [
+                'products' => [],
+                'currentPage' => 1,
+                'totalPages' => 1,
+                'category' => null,
+                'categories' => $categories,
+                'cartItemCount' => $cartItemCount,
+                'error' => 'An error occurred while loading products. Please try again later.'
+            ];
+            
+            $this->view->renderWithLayout('products/index', $data, 'layouts/main');
         }
     }
 
@@ -126,9 +144,28 @@ class ProductController extends Controller
         } catch (\Exception $e) {
             // Log the error
             error_log('ProductController@search error: ' . $e->getMessage());
-            // Display a user-friendly error message
-            http_response_code(500);
-            echo 'An error occurred while searching products. Please try again later.';
+            
+            // Get all categories for filter
+            $categories = $this->categoryModel->getAll();
+            
+            // Get cart item count
+            $cartItemCount = 0;
+            if (isset($_SESSION['XCart'])) {
+                $cartItemCount = count($_SESSION['XCart']);
+            }
+            
+            // Render view with error message
+            $data = [
+                'products' => [],
+                'currentPage' => 1,
+                'totalPages' => 1,
+                'search' => '',
+                'categories' => $categories,
+                'cartItemCount' => $cartItemCount,
+                'error' => 'An error occurred while searching products. Please try again later.'
+            ];
+            
+            $this->view->renderWithLayout('products/search', $data, 'layouts/main');
         }
     }
 
@@ -170,9 +207,25 @@ class ProductController extends Controller
         } catch (\Exception $e) {
             // Log the error
             error_log('ProductController@show error: ' . $e->getMessage());
-            // Display a user-friendly error message
-            http_response_code(500);
-            echo 'An error occurred while loading the product. Please try again later.';
+            
+            // Get all categories for navigation
+            $categories = $this->categoryModel->getAll();
+            
+            // Get cart item count
+            $cartItemCount = 0;
+            if (isset($_SESSION['XCart'])) {
+                $cartItemCount = count($_SESSION['XCart']);
+            }
+            
+            // Render view with error message
+            $data = [
+                'product' => null,
+                'categories' => $categories,
+                'cartItemCount' => $cartItemCount,
+                'error' => 'An error occurred while loading the product. Please try again later.'
+            ];
+            
+            $this->view->renderWithLayout('products/view', $data, 'layouts/main');
         }
     }
 }

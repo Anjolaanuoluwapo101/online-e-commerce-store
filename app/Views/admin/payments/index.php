@@ -2,6 +2,13 @@
     <div class="col-12">
         <h2 class="mb-4"><i class="fa fa-credit-card"></i> Payments Management</h2>
         
+        <?php if (isset($error) && $error): ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fa fa-exclamation-triangle me-2"></i><?= htmlspecialchars($error) ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif; ?>
+        
         <!-- Filter Section -->
         <div class="card-admin mb-4">
             <div class="card-admin-header">
@@ -72,7 +79,7 @@
                         </div>
                     <?php else: ?>
                         <div class="table-responsive">
-                            <table class="table table-bordered table-striped">
+                            <table class="table table-hover">
                                 <thead class="table-light">
                                     <tr>
                                         <th>ID</th>
@@ -88,7 +95,7 @@
                                 </thead>
                                 <tbody>
                                     <?php foreach ($payments as $payment): ?>
-                                        <tr>
+                                        <tr class="hover-lift">
                                             <td><?= $payment['id'] ?></td>
                                             <td>#<?= $payment['order_id'] ?></td>
                                             <td><?= htmlspecialchars($payment['order_email']) ?></td>
@@ -102,9 +109,7 @@
                                             <td><?= $payment['channel'] ?? 'N/A' ?></td>
                                             <td><?= date('M j, Y H:i', strtotime($payment['created_at'])) ?></td>
                                             <td>
-                                                <a href="/admin/payments/<?= $payment['id'] ?>" class="btn btn-success btn-sm">
-                                                    <i class="fa fa-eye"></i> View
-                                                </a>
+                                                <a href="/admin/payments/<?= $payment['id'] ?>" class="btn btn-success btn-sm"><i class="fa fa-eye"></i> View</a>
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>
@@ -199,7 +204,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
                 <div class="card-admin-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped">
+                        <table class="table table-hover">
                             <thead class="table-light">
                                 <tr>
                                     <th>ID</th>
@@ -221,7 +226,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                    payment.status === 'failed' ? 'danger' : 'secondary';
             
             html += `
-                <tr>
+                <tr class="hover-lift">
                     <td>${payment.id}</td>
                     <td>#${payment.order_id}</td>
                     <td>${payment.order_email}</td>
@@ -235,9 +240,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <td>${payment.channel || 'N/A'}</td>
                     <td>${new Date(payment.created_at).toLocaleString()}</td>
                     <td>
-                        <a href="/admin/payments/${payment.id}" class="btn btn-success btn-sm">
-                            <i class="fa fa-eye"></i> View
-                        </a>
+                        <a href="/admin/payments/${payment.id}" class="btn btn-success btn-sm"><i class="fa fa-eye"></i> View</a>
                     </td>
                 </tr>
             `;

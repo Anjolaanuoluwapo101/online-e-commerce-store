@@ -23,11 +23,24 @@ class PaymentController extends Controller
      */
     public function index()
     {
-        $payments = $this->paymentModel->getAllWithOrderDetails();
-        
-        $this->view->renderWithLayout('admin/payments/index', [
-            'payments' => $payments
-        ], 'layouts/admin');
+        try {
+            $payments = $this->paymentModel->getAllWithOrderDetails();
+            
+            $this->view->renderWithLayout('admin/payments/index', [
+                'payments' => $payments
+            ], 'layouts/admin');
+        } catch (\Exception $e) {
+            // Log the error
+            error_log('Admin\\PaymentController@index error: ' . $e->getMessage());
+            
+            // Render view with error message
+            $data = [
+                'payments' => [],
+                'error' => 'An error occurred while loading payments. Please try again later.'
+            ];
+            
+            $this->view->renderWithLayout('admin/payments/index', $data, 'layouts/admin');
+        }
     }
 
     /**

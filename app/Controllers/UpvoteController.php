@@ -33,7 +33,7 @@ class UpvoteController extends Controller
             $product = $this->productModel->getById($id);
             
             if (!$product || $product['category_slug'] !== $categorySlug) {
-                echo "Product not found";
+                echo "0"; // Product not found
                 return;
             }
             

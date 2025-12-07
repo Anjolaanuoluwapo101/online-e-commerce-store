@@ -10,6 +10,17 @@
         </div>
     </div>
     
+    <?php if (isset($error) && $error): ?>
+        <div class="row">
+            <div class="col-12">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fa fa-exclamation-triangle me-2"></i><?= htmlspecialchars($error) ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+    <?php endif; ?>
+    
     <div class="row mb-4 slide-up">
         <div class="col-12">
             <div class="card shadow-lg">

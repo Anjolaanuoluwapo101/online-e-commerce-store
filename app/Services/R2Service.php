@@ -44,10 +44,13 @@ class R2Service
     public function uploadFile($tempFilePath, $fileName, $mimeType)
     {
         try {
+            // Prepend 'shopconv/' to the filename for organized storage
+            $fullPath = 'shopconv/' . $fileName;
+            
             // Upload the file
             $this->s3->putObject([
                 'Bucket' => $this->bucketName,
-                'Key'    => $fileName,      
+                'Key'    => $fullPath,      
                 'SourceFile' => $tempFilePath, 
                 'ContentType' => $mimeType,
                 // 'ACL' => 'public-read' // R2 doesn't always use ACLs same as AWS, relies on bucket settings
@@ -55,7 +58,7 @@ class R2Service
 
             // Construct the public URL manually
             // R2 URLs are: PublicDomain + / + FileName
-            return $this->publicDomain . '/' . $fileName;
+            return $this->publicDomain . '/' . $fullPath;
 
         } catch (AwsException $e) {
             // Log error locally
@@ -70,9 +73,12 @@ class R2Service
     public function deleteFile($fileName)
     {
         try {
+            // Prepend 'shopconv/' to the filename for organized storage
+            $fullPath = 'shopconv/' . $fileName;
+            
             $this->s3->deleteObject([
                 'Bucket' => $this->bucketName,
-                'Key'    => $fileName
+                'Key'    => $fullPath
             ]);
             return true;
         } catch (AwsException $e) {

@@ -120,6 +120,20 @@
             padding: 25px;
         }
         
+        /* Button icon and text alignment */
+        .btn i {
+            margin-right: 5px;
+        }
+        
+        .btn i.fa-eye {
+            display: inline-block;
+        }
+        
+        /* Ensure buttons in tables don't wrap */
+        table .btn {
+            white-space: nowrap;
+        }
+        
         /* Mobile adjustments */
         @media (max-width: 767px) {
             .admin-nav {
@@ -151,14 +165,14 @@
                     <h1><i class="fa fa-cog"></i> Admin Panel</h1>
                 </div>
                 <div class="col-md-6 text-end admin-nav">
-                    <a href="/admin"><i class="fa fa-dashboard"></i> Dashboard</a>
-                    <a href="/admin/categories"><i class="fa fa-folder"></i> Categories</a>
-                    <a href="/admin/tags"><i class="fa fa-tags"></i> Tags</a>
-                    <a href="/admin/products"><i class="fa fa-cube"></i> Products</a>
-                    <a href="/admin/products/create"><i class="fa fa-plus"></i> Add Product</a>
-                    <a href="/admin/orders"><i class="fa fa-shopping-cart"></i> Orders</a>
-                    <a href="/admin/payments"><i class="fa fa-credit-card"></i> Payments</a>
-                    <a href="/"><i class="fa fa-home"></i> Back to Site</a>
+                    <a href="/admin" <?php if ($_SERVER['REQUEST_URI'] == '/admin') echo "style='color: white; background-color: #f33f3f;'"; ?>><i class="fa fa-dashboard"></i> Dashboard</a>
+                    <a href="/admin/categories" <?php if ($_SERVER['REQUEST_URI'] == '/admin/categories') echo "style='color: white; background-color: #f33f3f;'"; ?>><i class="fa fa-folder"></i> Categories</a>
+                    <a href="/admin/tags" <?php if ($_SERVER['REQUEST_URI'] == '/admin/tags') echo "style='color: white; background-color: #f33f3f;'"; ?>><i class="fa fa-tags"></i> Tags</a>
+                    <a href="/admin/products" <?php if ($_SERVER['REQUEST_URI'] == '/admin/products') echo "style='color: white; background-color: #f33f3f;'"; ?>><i class="fa fa-cube"></i> Products</a>
+                    <a href="/admin/products/create" <?php if ($_SERVER['REQUEST_URI'] == '/admin/products/create') echo "style='color: white; background-color: #f33f3f;'"; ?>><i class="fa fa-plus"></i> Add Product</a>
+                    <a href="/admin/orders" <?php if ($_SERVER['REQUEST_URI'] == '/admin/orders') echo "style='color: white; background-color: #f33f3f;'"; ?>><i class="fa fa-shopping-cart"></i> Orders</a>
+                    <a href="/admin/payments" <?php if ($_SERVER['REQUEST_URI'] == '/admin/payments') echo "style='color: white; background-color: #f33f3f;'"; ?>><i class="fa fa-credit-card"></i> Payments</a>
+                    <a href="/" <?php if ($_SERVER['REQUEST_URI'] == '/') echo "style='color: white; background-color: #f33f3f;'"; ?>><i class="fa fa-home"></i> Back to Site</a>
                 </div>
             </div>
         </div>

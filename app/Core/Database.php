@@ -53,7 +53,9 @@ class Database
 
             $this->connection = new PDO($dsn, $username, $password, $options);
         } catch (\PDOException $e) {
-            throw new \Exception("Database connection failed: " . $e->getMessage());
+            error_log("Database connection failed: " . $e->getMessage());
+            header('HTTP/1.1 500 Internal Server Error');
+            // throw new \Exception("Database connection failed: " . $e->getMessage());
         }
     }
 

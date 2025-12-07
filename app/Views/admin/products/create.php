@@ -2,6 +2,13 @@
     <div class="col-md-12">
         <h2 class="mb-4">Add New Product</h2>
         
+        <?php if (isset($error) && $error): ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fa fa-exclamation-triangle me-2"></i><?= htmlspecialchars($error) ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif; ?>
+        
         <?php if (!empty($nameError)): ?>
             <div class="alert alert-danger">
                 <?= $nameError ?>
@@ -11,6 +18,13 @@
         <?php if (!empty($imageError)): ?>
             <div class="alert alert-danger">
                 <?= $imageError ?>
+            </div>
+        <?php endif; ?>
+        
+        <?php if (!empty($successMessage)): ?>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fa fa-check-circle me-2"></i><?= htmlspecialchars($successMessage) ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         <?php endif; ?>
         
@@ -24,12 +38,12 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="productname" class="form-label">Product Name *</label>
-                                <input type="text" id="productname" name="productname" class="form-control" required>
+                                <input type="text" id="productname" name="productname" class="form-control" required <?php if (!empty($oldProductData['name'])): ?> value="<?= $oldProductData['name'] ?>" <?php endif; ?>>
                             </div>
                             
                             <div class="mb-3">
                                 <label for="brand" class="form-label">Brand</label>
-                                <input type="text" id="brand" name="brand" class="form-control">
+                                <input type="text" id="brand" name="brand" class="form-control" <?php if (!empty($oldProductData['brand'])): ?> value="<?= $oldProductData['brand'] ?>" <?php endif; ?>>
                             </div>
                             
                             <div class="mb-3">
@@ -37,19 +51,19 @@
                                 <select id="category_id" name="category_id" class="form-select" required>
                                     <option value="">Select Category</option>
                                     <?php foreach ($categories as $category): ?>
-                                        <option value="<?= $category['id'] ?>"><?= $category['name'] ?></option>
+                                        <option value="<?= $category['id'] ?>" <?php if (!empty($oldProductData['categoryId']) && $oldProductData['categoryId'] == $category['id']): ?> selected <?php endif; ?>><?= $category['name'] ?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
                             
                             <div class="mb-3">
                                 <label for="price" class="form-label">Price (₦) *</label>
-                                <input type="number" id="price" name="price" step="0.01" min="0" class="form-control" required>
+                                <input type="number" id="price" name="price" step="0.01" min="0" class="form-control" required <?php if (!empty($oldProductData['price'])): ?> value="<?= $oldProductData['price'] ?>" <?php endif; ?>>
                             </div>
                             
                             <div class="mb-3">
                                 <label for="quantity" class="form-label">Quantity *</label>
-                                <input type="number" id="quantity" name="quantity" min="0" class="form-control" required>
+                                <input type="number" id="quantity" name="quantity" min="0" class="form-control" required <?php if (!empty($oldProductData['quantity'])): ?> value="<?= $oldProductData['quantity'] ?>" <?php endif; ?>>
                             </div>
                         </div>
                         
@@ -57,12 +71,12 @@
                             <div class="mb-3">
                                 <label for="image" class="form-label">Product Image *</label>
                                 <input type="file" id="image" name="image" class="form-control" accept="image/*" required>
-                                <div class="form-text">Supported formats: JPG, PNG</div>
+                                <div class="form-text">Supported formats: JPG, PNG (Max 5MB)</div>
                             </div>
                             
                             <div class="mb-3">
                                 <label for="description" class="form-label">Description</label>
-                                <textarea id="description" name="description" class="form-control" rows="5"></textarea>
+                                <textarea id="description" name="description" class="form-control" rows="5"><?php if (!empty($oldProductData['description'])): ?><?= $oldProductData['description'] ?><?php endif; ?></textarea>
                             </div>
                         </div>
                     </div>

@@ -27,11 +27,10 @@ class Migration
      */
     private function createDatabase()
     {
-
-        $host = $_SERVER['DB_HOST'] ?? getenv('DB_HOST') ;
-        $db_name = $_SERVER['DB_NAME'] ?? getenv('DB_NAME') ;
-        $username = $_SERVER['DB_USER'] ?? getenv('DB_USER') ;
-        $password = $_SERVER['DB_PASSWORD'] ?? getenv('DB_PASSWORD') ;
+        $host = 'sql3.freesqldatabase.com';
+        $db_name = 'sql3807573';
+        $username = 'sql3807573';
+        $password = 'DjsYBc6Dv9';
 
         try {
             $dsn = "mysql:host={$host}";

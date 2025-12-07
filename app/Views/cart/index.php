@@ -1,27 +1,3 @@
-<?php 
-    session_name('XCart');
-    session_start();
-?>
-
-<!-- Display success or cancel message based on SESSION flag set in PaymentController -->
-<?php if (isset($_SESSION['payment_success']) && $_SESSION['payment_success'] === true): ?>
-    <div class="alert alert-success">
-        <strong>Success!</strong> Your payment was successful. Thank you for shopping with us.
-    </div>
-<?php elseif (isset($_SESSION['payment_cancelled']) && $_SESSION['payment_cancelled'] === true): ?>
-    <div class="alert alert-danger">
-        <strong>Cancelled!</strong> Your payment was cancelled. Please try again or continue shopping.
-    </div>
-<?php endif; ?>
-<?php
-    // set session variables to false just in case unset does not work
-    $_SESSION['payment_success'] = false;
-    $_SESSION['payment_cancelled'] = false;
-    // unset session variables for payment success or cancellation
-    unset($_SESSION['payment_success'], $_SESSION['payment_cancelled']);
-?>
-
-
 <div class="container py-4 fade-in">
     <div class="row">
         <div class="col-12">
@@ -33,7 +9,29 @@
             </nav>
         </div>
     </div>
-
+    
+    <?php if (isset($error) && $error): ?>
+        <div class="row">
+            <div class="col-12">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fa fa-exclamation-triangle me-2"></i><?= htmlspecialchars($error) ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+    <?php endif; ?>
+    
+    <?php if (isset($_GET['cart_error']) && $_GET['cart_error'] == 1): ?>
+        <div class="row">
+            <div class="col-12">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fa fa-exclamation-triangle me-2"></i>An error occurred while processing your cart request. Please try again.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+    <?php endif; ?>
+    
     <div class="row">
         <div class="col-12">
             <div class="card shadow-lg">
@@ -70,8 +68,7 @@
                                             <td><?= $item['quantity'] ?></td>
                                             <td>₦<?= number_format($item['price'] * $item['quantity']) ?></td>
                                             <td>
-                                                <a href="/cart/remove/<?= $item['refId'] ?>"
-                                                    class="btn btn-outline-danger btn-sm">
+                                                <a href="/cart/remove/<?= $item['refId'] ?>" class="btn btn-outline-danger btn-sm">
                                                     <i class="fa fa-trash"></i> Remove
                                                 </a>
                                             </td>
@@ -87,7 +84,7 @@
                                 </tfoot>
                             </table>
                         </div>
-
+                        
                         <!-- Checkout Form -->
                         <div class="mt-5">
                             <h3 class="mb-4">Proceed to Checkout</h3>
@@ -99,16 +96,14 @@
                                         <div class="form-text">We'll send your receipt to this email address.</div>
                                     </div>
                                 </div>
-
+                                
                                 <div class="alert alert-info">
                                     <h5><i class="fas fa-shield-alt me-2"></i> Secure Payment</h5>
-                                    <p class="mb-0">You will be redirected to our secure payment processor (Paystack) to
-                                        complete your purchase. Your payment information is never stored on our servers.</p>
+                                    <p class="mb-0">You will be redirected to our secure payment processor (Paystack) to complete your purchase. Your payment information is never stored on our servers.</p>
                                 </div>
-
+                                
                                 <!-- Cart Actions - Responsive Layout -->
-                                <div
-                                    class="d-flex flex-column flex-md-row justify-content-between align-items-center mt-4 gap-3">
+                                <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mt-4 gap-3">
                                     <a href="/cart/clear" class="btn btn-warning px-4 py-2 w-100 w-md-auto">
                                         <i class="fa fa-trash me-2"></i> Clear Cart
                                     </a>
@@ -116,8 +111,7 @@
                                         <a href="/products" class="btn btn-primary px-4 py-2 w-100 w-sm-auto">
                                             <i class="fa fa-shopping-bag me-2"></i> Continue Shopping
                                         </a>
-                                        <button type="submit" class="btn btn-success px-4 py-2 w-100 w-sm-auto"
-                                            id="checkoutButton">
+                                        <button type="submit" class="btn btn-success px-4 py-2 w-100 w-sm-auto" id="checkoutButton">
                                             <i class="fa fa-credit-card me-2"></i> Proceed to Checkout
                                         </button>
                                     </div>
@@ -132,15 +126,15 @@
 </div>
 
 <script>
-    document.getElementById('checkoutForm').addEventListener('submit', function (e) {
-        const button = document.getElementById('checkoutButton');
-        const originalText = button.innerHTML;
-
-        // Disable the button and show loading state
-        button.disabled = true;
-        button.innerHTML = '<i class="fa fa-spinner fa-spin me-2"></i> Processing...';
-
-        // Allow form submission to continue
-        return true;
-    });
+document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+    const button = document.getElementById('checkoutButton');
+    const originalText = button.innerHTML;
+    
+    // Disable the button and show loading state
+    button.disabled = true;
+    button.innerHTML = '<i class="fa fa-spinner fa-spin me-2"></i> Processing...';
+    
+    // Allow form submission to continue
+    return true;
+});
 </script>

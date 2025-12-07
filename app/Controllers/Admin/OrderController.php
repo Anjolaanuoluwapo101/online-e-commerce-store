@@ -23,11 +23,24 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = $this->orderModel->getAll();
-        
-        $this->view->renderWithLayout('admin/orders/index', [
-            'orders' => $orders
-        ], 'layouts/admin');
+        try {
+            $orders = $this->orderModel->getAll();
+            
+            $this->view->renderWithLayout('admin/orders/index', [
+                'orders' => $orders
+            ], 'layouts/admin');
+        } catch (\Exception $e) {
+            // Log the error
+            error_log('Admin\\OrderController@index error: ' . $e->getMessage());
+            
+            // Render view with error message
+            $data = [
+                'orders' => [],
+                'error' => 'An error occurred while loading orders. Please try again later.'
+            ];
+            
+            $this->view->renderWithLayout('admin/orders/index', $data, 'layouts/admin');
+        }
     }
 
     /**

@@ -150,10 +150,6 @@ class PaymentController extends Controller
             $this->mailer->sendInvoice($order['email'], 'Order Confirmation #' . $order['id'], $order['cart_data']);
 
             // Show success page or redirect to success page
-            // Set a Session Flag
-            $_SESSION['payment_success'] = true;
-
-            $this->redirect('/cart');
         }catch(\Exception $e){
             error_log('PaymentController@verifyTransaction error: ' . $e->getMessage());
             // Send an Email to admin or customer service about the error using the mailer service
@@ -190,10 +186,8 @@ class PaymentController extends Controller
             $this->orderModel->updateStatus($order['id'], 'cancelled');
             $this->orderModel->updatePaymentStatus($order['id'], 'unpaid');
 
-            // Set a Session Flag
-            $_SESSION['payment_cancelled'] = true;
-            
-            $this->redirect('/cart');
+            // Show cancellation page
+            return 'Payment was cancelled. Your order has been cancelled.';
         }catch(\Exception $e){
             error_log('PaymentController@cancelTransaction error: ' . $e->getMessage());
             echo 'An error occurred during payment cancellation. Please contact support.';

@@ -33,9 +33,14 @@ class TagController extends Controller
         } catch (\Exception $e) {
             // Log the error
             error_log('Admin\\TagController@index error: ' . $e->getMessage());
-            // Display a user-friendly error message
-            http_response_code(500);
-            echo 'An error occurred while loading tags. Please try again later.';
+            
+            // Render view with error message
+            $data = [
+                'tags' => [],
+                'error' => 'An error occurred while loading tags. Please try again later.'
+            ];
+            
+            $this->view->renderWithLayout('admin/tags/index', $data, 'layouts/admin');
         }
     }
 
@@ -55,9 +60,14 @@ class TagController extends Controller
         } catch (\Exception $e) {
             // Log the error
             error_log('Admin\\TagController@create error: ' . $e->getMessage());
-            // Display a user-friendly error message
-            http_response_code(500);
-            echo 'An error occurred while loading the create tag form. Please try again later.';
+            
+            // Render view with error message
+            $data = [
+                'errors' => [],
+                'error' => 'An error occurred while loading the create tag form. Please try again later.'
+            ];
+            
+            $this->view->renderWithLayout('admin/tags/create', $data, 'layouts/admin');
         }
     }
 
@@ -117,8 +127,10 @@ class TagController extends Controller
         } catch (\Exception $e) {
             // Log the error
             error_log('Admin\\TagController@store error: ' . $e->getMessage());
+            
             // Redirect with error message
-            $this->redirect('/admin/tags?error=1');
+            $_SESSION['errorMessage'] = 'An error occurred while creating the tag. Please try again later.';
+            $this->redirect('/admin/tags');
         }
     }
 
@@ -148,9 +160,15 @@ class TagController extends Controller
         } catch (\Exception $e) {
             // Log the error
             error_log('Admin\\TagController@edit error: ' . $e->getMessage());
-            // Display a user-friendly error message
-            http_response_code(500);
-            echo 'An error occurred while loading the edit tag form. Please try again later.';
+            
+            // Render view with error message
+            $data = [
+                'tag' => null,
+                'errors' => [],
+                'error' => 'An error occurred while loading the edit tag form. Please try again later.'
+            ];
+            
+            $this->view->renderWithLayout('admin/tags/edit', $data, 'layouts/admin');
         }
     }
 
@@ -215,8 +233,10 @@ class TagController extends Controller
         } catch (\Exception $e) {
             // Log the error
             error_log('Admin\\TagController@update error: ' . $e->getMessage());
+            
             // Redirect with error message
-            $this->redirect('/admin/tags?error=1');
+            $_SESSION['errorMessage'] = 'An error occurred while updating the tag. Please try again later.';
+            $this->redirect('/admin/tags');
         }
     }
 
@@ -245,8 +265,10 @@ class TagController extends Controller
         } catch (\Exception $e) {
             // Log the error
             error_log('Admin\\TagController@delete error: ' . $e->getMessage());
+            
             // Redirect with error message
-            $this->redirect('/admin/tags?error=1');
+            $_SESSION['errorMessage'] = 'An error occurred while deleting the tag. Please try again later.';
+            $this->redirect('/admin/tags');
         }
     }
 

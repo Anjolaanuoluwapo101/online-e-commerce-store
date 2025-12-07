@@ -42,9 +42,16 @@ class CartController extends Controller
         } catch (\Exception $e) {
             // Log the error
             error_log('CartController@index error: ' . $e->getMessage());
-            // Display a user-friendly error message
-            http_response_code(500);
-            echo 'An error occurred while loading the cart. Please try again later.';
+            
+            // Render view with error message
+            $data = [
+                'items' => [],
+                'itemCount' => 0,
+                'total' => 0,
+                'error' => 'An error occurred while loading the cart. Please try again later.'
+            ];
+            
+            $this->view->renderWithLayout('cart/index', $data, 'layouts/main');
         }
     }
 
@@ -75,7 +82,7 @@ class CartController extends Controller
             // Log the error
             error_log('CartController@add error: ' . $e->getMessage());
             // Redirect with error message
-            $this->redirect($_SERVER['HTTP_REFERER'] ?? '/' . '?error=1');
+            $this->redirect($_SERVER['HTTP_REFERER'] ?? '/' . '?cart_error=1');
         }
     }
 
@@ -94,7 +101,7 @@ class CartController extends Controller
             // Log the error
             error_log('CartController@remove error: ' . $e->getMessage());
             // Redirect with error message
-            $this->redirect('/cart?error=1');
+            $this->redirect('/cart?cart_error=1');
         }
     }
 
@@ -112,7 +119,7 @@ class CartController extends Controller
             // Log the error
             error_log('CartController@clear error: ' . $e->getMessage());
             // Redirect with error message
-            $this->redirect('/cart?error=1');
+            $this->redirect('/cart?cart_error=1');
         }
     }
 }

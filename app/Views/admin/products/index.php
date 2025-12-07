@@ -42,7 +42,7 @@
                             <option value="ASC">Ascending</option>
                         </select>
                     </div>
-                    <div class="col-md-2 mb-3 d-flex align-items-end">
+                    <div class="col-md-4 mb-3 float-right">
                         <button id="applyFilter" class="btn-admin me-2">
                             <i class="fa fa-search me-1"></i> Apply
                         </button>

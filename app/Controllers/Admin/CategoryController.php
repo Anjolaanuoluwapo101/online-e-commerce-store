@@ -33,9 +33,14 @@ class CategoryController extends Controller
         } catch (\Exception $e) {
             // Log the error
             error_log('Admin\\CategoryController@index error: ' . $e->getMessage());
-            // Display a user-friendly error message
-            http_response_code(500);
-            echo 'An error occurred while loading categories. Please try again later.';
+            
+            // Render view with error message
+            $data = [
+                'categories' => [],
+                'error' => 'An error occurred while loading categories. Please try again later.'
+            ];
+            
+            $this->view->renderWithLayout('admin/categories/index', $data, 'layouts/admin');
         }
     }
 
@@ -55,9 +60,14 @@ class CategoryController extends Controller
         } catch (\Exception $e) {
             // Log the error
             error_log('Admin\\CategoryController@create error: ' . $e->getMessage());
-            // Display a user-friendly error message
-            http_response_code(500);
-            echo 'An error occurred while loading the create category form. Please try again later.';
+            
+            // Render view with error message
+            $data = [
+                'errors' => [],
+                'error' => 'An error occurred while loading the create category form. Please try again later.'
+            ];
+            
+            $this->view->renderWithLayout('admin/categories/create', $data, 'layouts/admin');
         }
     }
 
@@ -117,8 +127,10 @@ class CategoryController extends Controller
         } catch (\Exception $e) {
             // Log the error
             error_log('Admin\\CategoryController@store error: ' . $e->getMessage());
+            
             // Redirect with error message
-            $this->redirect('/admin/categories?error=1');
+            $_SESSION['errorMessage'] = 'An error occurred while creating the category. Please try again later.';
+            $this->redirect('/admin/categories');
         }
     }
 
@@ -148,9 +160,15 @@ class CategoryController extends Controller
         } catch (\Exception $e) {
             // Log the error
             error_log('Admin\\CategoryController@edit error: ' . $e->getMessage());
-            // Display a user-friendly error message
-            http_response_code(500);
-            echo 'An error occurred while loading the edit category form. Please try again later.';
+            
+            // Render view with error message
+            $data = [
+                'category' => null,
+                'errors' => [],
+                'error' => 'An error occurred while loading the edit category form. Please try again later.'
+            ];
+            
+            $this->view->renderWithLayout('admin/categories/edit', $data, 'layouts/admin');
         }
     }
 
@@ -215,8 +233,10 @@ class CategoryController extends Controller
         } catch (\Exception $e) {
             // Log the error
             error_log('Admin\\CategoryController@update error: ' . $e->getMessage());
+            
             // Redirect with error message
-            $this->redirect('/admin/categories?error=1');
+            $_SESSION['errorMessage'] = 'An error occurred while updating the category. Please try again later.';
+            $this->redirect('/admin/categories');
         }
     }
 
@@ -245,8 +265,10 @@ class CategoryController extends Controller
         } catch (\Exception $e) {
             // Log the error
             error_log('Admin\\CategoryController@delete error: ' . $e->getMessage());
+            
             // Redirect with error message
-            $this->redirect('/admin/categories?error=1');
+            $_SESSION['errorMessage'] = 'An error occurred while deleting the category. Please try again later.';
+            $this->redirect('/admin/categories');
         }
     }
 

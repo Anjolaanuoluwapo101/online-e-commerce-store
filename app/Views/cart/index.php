@@ -21,6 +21,30 @@
         </div>
     <?php endif; ?>
     
+    <?php if (isset($_SESSION['errorMessage']) && $_SESSION['errorMessage']): ?>
+        <div class="row">
+            <div class="col-12">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fa fa-exclamation-triangle me-2"></i><?= htmlspecialchars($_SESSION['errorMessage']) ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+        <?php unset($_SESSION['errorMessage']); ?>
+    <?php endif; ?>
+    
+    <?php if (isset($_SESSION['successMessage']) && $_SESSION['successMessage']): ?>
+        <div class="row">
+            <div class="col-12">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fa fa-check-circle me-2"></i><?= htmlspecialchars($_SESSION['successMessage']) ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+        <?php unset($_SESSION['successMessage']); ?>
+    <?php endif; ?>
+    
     <?php if (isset($_GET['cart_error']) && $_GET['cart_error'] == 1): ?>
         <div class="row">
             <div class="col-12">
@@ -94,6 +118,11 @@
                                         <label for="email" class="form-label">Email Address *</label>
                                         <input type="email" class="form-control" id="email" name="email" required>
                                         <div class="form-text">We'll send your receipt to this email address.</div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="address" class="form-label">Delivery Address *</label>
+                                        <textarea class="form-control" id="address" name="address" rows="3" required placeholder="Enter your full delivery address"></textarea>
+                                        <div class="form-text">Please provide your complete delivery address including street, city, and postal code.</div>
                                     </div>
                                 </div>
                                 

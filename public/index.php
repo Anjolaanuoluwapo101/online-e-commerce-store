@@ -71,6 +71,7 @@ $router->get('/upvote/{any}/{any}/{id}', 'UpvoteController', 'upvote');
 $router->post('/payment/create', 'PaymentController', 'createTransaction');
 $router->get('/payment/callback', 'PaymentController', 'verifyTransaction');
 $router->get('/payment/cancel', 'PaymentController', 'cancelTransaction');
+$router->get('/cart/success', 'PaymentController', 'success');
 
 // Admin routes
 $router->get('/admin', 'Admin\DashboardController', 'index');

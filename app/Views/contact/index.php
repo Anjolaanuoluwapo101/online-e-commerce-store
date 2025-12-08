@@ -66,6 +66,11 @@
                                                 <input name="subject" type="text" class="form-control form-control-lg rounded-pill px-4 py-3" id="subject" placeholder="Enter subject" required>
                                             </div>
                                             
+                                            <div class="mb-4">
+                                                <label for="address" class="form-label fw-bold">Address</label>
+                                                <textarea name="address" rows="3" class="form-control rounded-3 px-4 py-3" id="address" placeholder="Enter your address"></textarea>
+                                            </div>
+                                            
                                             <div class="mb-5">
                                                 <label for="message" class="form-label fw-bold">Message</label>
                                                 <textarea name="message" rows="6" class="form-control rounded-3 px-4 py-3" id="message" placeholder="Enter your message" required></textarea>

@@ -134,6 +134,7 @@ class Migration
         $sql = "CREATE TABLE IF NOT EXISTS orders (
             id INT AUTO_INCREMENT PRIMARY KEY,
             email VARCHAR(150) NOT NULL,
+            address TEXT NULL,
             total_amount DECIMAL(15, 2) NOT NULL, 
             cart_data LONGTEXT NULL,
             status ENUM('pending', 'processing', 'completed', 'cancelled') DEFAULT 'pending',
@@ -141,6 +142,22 @@ class Migration
             created_at TIMESTAMP DEFAULT NOW()
         );";
         $this->db->exec($sql);
+    }
+
+    /**
+     * Add address column to orders table
+     * 
+     * @return void
+     */
+    public function addAddressToOrdersTable()
+    {
+        try {
+            $sql = "ALTER TABLE orders ADD COLUMN address TEXT NULL AFTER email";
+            $this->db->exec($sql);
+        } catch (\Exception $e) {
+            // Column might already exist, ignore the error
+            error_log("Error adding address column to orders table: " . $e->getMessage());
+        }
     }
 
     /*
@@ -195,6 +212,7 @@ class Migration
         $this->createTagsTable();
         $this->createProductTagsTable();
         $this->createOrdersTable();
+        $this->addAddressToOrdersTable();
         $this->createPaymentsTable();
     }
 

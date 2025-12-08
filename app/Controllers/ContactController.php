@@ -72,6 +72,7 @@ class ContactController extends Controller
                 $name = htmlspecialchars($_POST['name'] ?? '');
                 $email = htmlspecialchars($_POST['email'] ?? '');
                 $subject = htmlspecialchars($_POST['subject'] ?? '');
+                $address = htmlspecialchars($_POST['address'] ?? '');
                 $message = htmlspecialchars($_POST['message'] ?? '');
                 
                 // Validate input
@@ -94,6 +95,7 @@ class ContactController extends Controller
                     <p><strong>Name:</strong> {$name}</p>
                     <p><strong>Email:</strong> {$email}</p>
                     <p><strong>Subject:</strong> {$subject}</p>
+                    " . (!empty($address) ? "<p><strong>Address:</strong> {$address}</p>" : "") . "
                     <p><strong>Message:</strong></p>
                     <p>{$message}</p>
                 ";
@@ -111,6 +113,7 @@ class ContactController extends Controller
                 $name = htmlspecialchars($_POST['name'] ?? '');
                 $email = htmlspecialchars($_POST['email'] ?? '');
                 $subject = htmlspecialchars($_POST['subject'] ?? '');
+                $address = htmlspecialchars($_POST['address'] ?? '');
                 $message = htmlspecialchars($_POST['message'] ?? '');
                 
                 // Prepare email content
@@ -119,6 +122,7 @@ class ContactController extends Controller
                     <p><strong>Name:</strong> {$name}</p>
                     <p><strong>Email:</strong> {$email}</p>
                     <p><strong>Subject:</strong> {$subject}</p>
+                    " . (!empty($address) ? "<p><strong>Address:</strong> {$address}</p>" : "") . "
                     <p><strong>Message:</strong></p>
                     <p>{$message}</p>
                 ";

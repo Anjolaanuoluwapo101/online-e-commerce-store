@@ -1,6 +1,21 @@
 <div class="container py-4 fade-in">
     <div class="row justify-content-center">
         <div class="col-lg-8">
+            <?php if (isset($error) && $error): ?>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fa fa-exclamation-triangle me-2"></i><?= htmlspecialchars($error) ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <?php endif; ?>
+            
+            <?php if (isset($_SESSION['errorMessage']) && $_SESSION['errorMessage']): ?>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fa fa-exclamation-triangle me-2"></i><?= htmlspecialchars($_SESSION['errorMessage']) ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <?php unset($_SESSION['errorMessage']); ?>
+            <?php endif; ?>
+            
             <div class="card shadow-lg">
                 <div class="card-header bg-success text-white py-4">
                     <h1 class="mb-0 text-center">

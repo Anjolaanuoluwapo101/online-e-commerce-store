@@ -20,7 +20,7 @@ class UpvoteController extends Controller
 
     /**
      * Upvote a product
-     * 
+     * Called Asynchronous.
      * @param string $categorySlug Category slug
      * @param string $productName Product name
      * @param int $id Product ID

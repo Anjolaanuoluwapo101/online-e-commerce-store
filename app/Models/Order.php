@@ -35,15 +35,17 @@ class Order extends Model
      * @param string $email Customer email
      * @param float $totalAmount Total amount for the order
      * @param string $cartData Serialized cart data
+     * @param string $address Customer delivery address
      * @return int|false Order ID or false on failure
      */
-    public function create($email, $totalAmount, $cartData = null)
+    public function create($email, $totalAmount, $cartData = null, $address = null)
     {
         // Using the createOrdersTable column structure in Migration.php
-        $sql = "INSERT INTO orders(email, total_amount, cart_data) VALUES(:email, :total_amount, :cart_data)";
+        $sql = "INSERT INTO orders(email, address, total_amount, cart_data) VALUES(:email, :address, :total_amount, :cart_data)";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([
             ':email' => $email,
+            ':address' => $address,
             ':total_amount' => $totalAmount,
             ':cart_data' => $cartData
         ]);

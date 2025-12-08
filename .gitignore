@@ -2,3 +2,6 @@ migrate.php
 /migrate.php
 /vendor
 .clinerules
+app/Core/Migration.php
+#comment the Migration.php
+/app/Core/Migration.php

@@ -41,6 +41,12 @@ class PaymentController extends Controller
             if (empty($email)) {
                 throw new \Exception('Email is required.');
             }
+            
+            // Get address
+            $address = $_POST['address'] ?? '';
+            if (empty($address)) {
+                throw new \Exception('Address is required.');
+            }
 
             // Get cart items from session
             $cartItems = [];
@@ -71,7 +77,7 @@ class PaymentController extends Controller
             $reference = $this->generateReference();
 
             // Create the Order with calculated total and cart data
-            $orderId = $this->orderModel->create($email, $totalAmount,  $cartData);
+            $orderId = $this->orderModel->create($email, $totalAmount,  $cartData, $address);
             if (!$orderId) {
                 throw new \Exception('Failed to create order.');
             }
@@ -96,9 +102,10 @@ class PaymentController extends Controller
         } catch (\Exception $e) {
             // Log the error
             error_log('PaymentController@createTransaction error: ' . $e->getMessage());
-            echo 'PaymentController@createTransaction error: ' . $e->getMessage();
-            http_response_code(500);
-            echo 'An error occurred while processing your payment. Please try again later.';
+            
+            // Redirect with error message
+            $_SESSION['errorMessage'] = 'An error occurred while processing your payment. Please try again later.';
+            $this->redirect('/cart');
         }
     }
 
@@ -147,14 +154,18 @@ class PaymentController extends Controller
             $this->paymentModel->updateStatus($payment['id'], 'paid');
 
             // Send notification email to customer (invoice)
-            $this->mailer->sendInvoice($order['email'], 'Order Confirmation #' . $order['id'], $order['cart_data']);
+            $this->mailer->sendInvoice($order['email'], 'Order Confirmation #' . $order['id'], $order['cart_data'], $order['address'] ?? null);
 
-            // Show success page or redirect to success page
+            // Redirect to success page
+            $this->redirect('/cart/success?order_id=' . $order['id']);
         }catch(\Exception $e){
             error_log('PaymentController@verifyTransaction error: ' . $e->getMessage());
             // Send an Email to admin or customer service about the error using the mailer service
             $this->mailer->sendMailToSiteOwner('Payment Verification Error', $e->getMessage());
-            echo 'An error occurred during payment verification. Our team has been notified and will process your order manually.';
+            
+            // Redirect to cart with error message
+            $_SESSION['errorMessage'] = 'An error occurred during payment verification. Our team has been notified and will process your order manually.';
+            $this->redirect('/cart');
         }
     }
 
@@ -186,11 +197,40 @@ class PaymentController extends Controller
             $this->orderModel->updateStatus($order['id'], 'cancelled');
             $this->orderModel->updatePaymentStatus($order['id'], 'unpaid');
 
-            // Show cancellation page
-            return 'Payment was cancelled. Your order has been cancelled.';
+            // Redirect to cart with cancellation message
+            $_SESSION['successMessage'] = 'Payment was cancelled. Your order has been cancelled.';
+            $this->redirect('/cart');
         }catch(\Exception $e){
             error_log('PaymentController@cancelTransaction error: ' . $e->getMessage());
-            echo 'An error occurred during payment cancellation. Please contact support.';
+            
+            // Redirect to cart with error message
+            $_SESSION['errorMessage'] = 'An error occurred during payment cancellation. Please contact support.';
+            $this->redirect('/cart');
+        }
+    }
+
+    /**
+     * Show payment success page
+     * 
+     * @return void
+     */
+    public function success()
+    {
+        try {
+            $orderId = $_GET['order_id'] ?? null;
+            
+            $data = [
+                'orderId' => $orderId
+            ];
+            
+            $this->view->renderWithLayout('cart/success', $data, 'layouts/main');
+        } catch (\Exception $e) {
+            // Log the error
+            error_log('PaymentController@success error: ' . $e->getMessage());
+            
+            // Redirect to cart with error message
+            $_SESSION['errorMessage'] = 'An error occurred while loading the success page. Please check your email for order confirmation.';
+            $this->redirect('/cart');
         }
     }
 
@@ -207,6 +247,4 @@ class PaymentController extends Controller
         // 3. Combine them
         return strtoupper($prefix . '-' . $datePart . '-' . $randomPart);
     }
-
-
 }

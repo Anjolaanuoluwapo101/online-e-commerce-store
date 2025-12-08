@@ -87,7 +87,7 @@ class PHPMailerService
     /*
      * Send Formatted Cart Data as Invoice to User
      */
-    public function sendInvoice(string $email, string $subject, string $cartData): bool
+    public function sendInvoice(string $email, string $subject, string $cartData, string $address = null): bool
     {
         // Decode the cart data
         $items = json_decode($cartData, true);
@@ -104,7 +104,7 @@ class PHPMailerService
         }
         
         // Generate the invoice HTML
-        $htmlBody = $this->generateInvoiceHtml($items, $email);
+        $htmlBody = $this->generateInvoiceHtml($items, $email, $address);
         
         // Send the email
         return $this->sendEmail($email, $subject, $htmlBody);
@@ -115,9 +115,10 @@ class PHPMailerService
      * 
      * @param array $items Cart items
      * @param string $customerEmail Customer email
+     * @param string $deliveryAddress Customer delivery address
      * @return string HTML content for the invoice
      */
-    private function generateInvoiceHtml(array $items, string $customerEmail): string
+    private function generateInvoiceHtml(array $items, string $customerEmail, string $deliveryAddress = null): string
     {
         // Calculate totals
         $subtotal = 0;
@@ -161,6 +162,17 @@ class PHPMailerService
                 .customer-info {
                     text-align: right;
                     margin-bottom: 30px;
+                }
+                .delivery-address {
+                    background-color: #f8f9fa;
+                    border: 1px solid #dee2e6;
+                    border-radius: 5px;
+                    padding: 15px;
+                    margin-bottom: 30px;
+                }
+                .delivery-address h3 {
+                    margin-top: 0;
+                    color: #495057;
                 }
                 .items-table {
                     width: 100%;
@@ -231,8 +243,17 @@ class PHPMailerService
             <div class="customer-info">
                 <h3>Bill To:</h3>
                 <p>' . htmlspecialchars($customerEmail) . '</p>
-            </div>
+            </div>';
             
+        if (!empty($deliveryAddress)) {
+            $html .= '
+            <div class="delivery-address">
+                <h3>Delivery Address:</h3>
+                <p>' . nl2br(htmlspecialchars($deliveryAddress)) . '</p>
+            </div>';
+        }
+            
+        $html .= '
             <table class="items-table">
                 <thead>
                     <tr>

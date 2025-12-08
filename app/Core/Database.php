@@ -41,6 +41,7 @@ class Database
         $username = $_SERVER['DB_USER'] ?? getenv('DB_USER') ;
         $password = $_SERVER['DB_PASSWORD'] ?? getenv('DB_PASSWORD') ;
 
+
         
 
         try {

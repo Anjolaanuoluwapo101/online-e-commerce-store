@@ -48,6 +48,20 @@ class Tag extends Model
     }
 
     /**
+     * Get tag by name (case insensitive)
+     * 
+     * @param string $name Tag name
+     * @return array|null
+     */
+    public function getByName($name)
+    {
+        $sql = "SELECT * FROM tags WHERE LOWER(name) = LOWER(:name)";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute(['name' => $name]);
+        return $stmt->fetch();
+    }
+
+    /**
      * Get tags by product ID
      * 
      * @param int $productId Product ID

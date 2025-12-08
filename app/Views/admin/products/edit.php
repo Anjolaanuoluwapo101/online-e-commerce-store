@@ -77,7 +77,7 @@
                                     <label for="tags" class="form-label">Tags</label>
                                     <input type="text" id="tags" name="tags" class="form-control" placeholder="Enter tags separated by commas" value="<?php 
                                         $tagNames = [];
-                                        foreach ($tags as $tag) {
+                                        foreach ($productTags as $tag) {
                                             $tagNames[] = $tag['name'];
                                         }
                                         echo implode(', ', $tagNames);

@@ -82,8 +82,8 @@
                             <!-- Tags Section -->
                             <div class="mb-3">
                                 <label for="tags" class="form-label">Tags</label>
-                                <input type="text" id="tags" name="tags" class="form-control" placeholder="Enter tags separated by commas">
-                                <div class="form-text">Separate multiple tags with commas (e.g., electronics, smartphone, android)</div>
+                                <input type="text" id="tags" name="tags" class="form-control" placeholder="select/deselect from existing tags below" disabled>
+                                <!-- <div class="form-text">Separate multiple tags with commas (e.g., electronics, smartphone, android)</div> -->
                                 
                                 <?php if (!empty($tags)): ?>
                                 <div class="mt-3">

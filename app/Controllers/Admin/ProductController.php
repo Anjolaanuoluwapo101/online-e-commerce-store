@@ -66,6 +66,56 @@ class ProductController extends Controller
     }
 
     /**
+     * Get products with optional filtering and sorting (async)
+     * 
+     * @return void
+     */
+    public function filter()
+    {
+        try {
+            $categoryId = $this->get('category_id');
+            $searchTerm = $this->get('search');
+            $orderBy = $this->get('order_by', 'created_at');
+            $direction = $this->get('direction', 'DESC');
+            
+            // Get products based on filters
+            if ($categoryId && $categoryId !== 'all') {
+                $products = $this->productModel->getByCategoryId($categoryId, null, 0, $orderBy, $direction);
+            } else {
+                $products = $this->productModel->getAll(null, 0, $orderBy, $direction);
+            }
+            
+            // Apply client-side search filtering if provided
+            if ($searchTerm) {
+                $filteredProducts = [];
+                foreach ($products as $product) {
+                    if (stripos($product['productname'], $searchTerm) !== false ||
+                        stripos($product['brand'], $searchTerm) !== false ||
+                        stripos($product['description'], $searchTerm) !== false) {
+                        $filteredProducts[] = $product;
+                    }
+                }
+                $products = $filteredProducts;
+            }
+            
+            // Add tags to each product for the view
+            foreach ($products as &$product) {
+                $product['tags'] = $this->productModel->getTags($product['id']);
+            }
+            
+            header('Content-Type: application/json');
+            echo json_encode($products);
+        } catch (\Exception $e) {
+            // Log the error
+            error_log('Admin\\ProductController@filter error: ' . $e->getMessage());
+            // Return error response
+            header('Content-Type: application/json');
+            http_response_code(500);
+            echo json_encode(['error' => 'An error occurred while filtering products. Please try again later.']);
+        }
+    }
+
+    /**
      * Show form to add product
      * 
      * @return void
@@ -231,34 +281,13 @@ class ProductController extends Controller
                                 
                                 foreach ($tagNames as $tagName) {
                                     if (!empty($tagName)) {
-                                        // Check if tag already exists
-                                        $existingTag = null;
-                                        // Get all tags and check manually since there's no getByName method
-                                        $allTags = $tagModel->getAll();
-                                        foreach ($allTags as $tag) {
-                                            if (strtolower($tag['name']) === strtolower($tagName)) {
-                                                $existingTag = $tag;
-                                                break;
-                                            }
-                                        }
+                                        // Check if tag already exists using the new getByName method
+                                        $existingTag = $tagModel->getByName($tagName);
                                         
                                         if ($existingTag) {
                                             $tagIds[] = $existingTag['id'];
-                                        } else {
-                                            // Create new tag
-                                            $tagData = [
-                                                'name' => $tagName
-                                            ];
-                                            $tagModel->create($tagData);
-                                            // Get the newly created tag to get its ID
-                                            $allTags = $tagModel->getAll();
-                                            foreach ($allTags as $tag) {
-                                                if (strtolower($tag['name']) === strtolower($tagName)) {
-                                                    $tagIds[] = $tag['id'];
-                                                    break;
-                                                }
-                                            }
-                                        }
+
+                                        } 
                                     }
                                 }
                                 
@@ -391,34 +420,12 @@ class ProductController extends Controller
                         
                         foreach ($tagNames as $tagName) {
                             if (!empty($tagName)) {
-                                // Check if tag already exists
-                                $existingTag = null;
-                                // Get all tags and check manually since there's no getByName method
-                                $allTags = $tagModel->getAll();
-                                foreach ($allTags as $tag) {
-                                    if (strtolower($tag['name']) === strtolower($tagName)) {
-                                        $existingTag = $tag;
-                                        break;
-                                    }
-                                }
+                                // Check if tag already exists using the new getByName method
+                                $existingTag = $tagModel->getByName($tagName);
                                 
                                 if ($existingTag) {
                                     $tagIds[] = $existingTag['id'];
-                                } else {
-                                    // Create new tag
-                                    $tagData = [
-                                        'name' => $tagName
-                                    ];
-                                    $tagModel->create($tagData);
-                                    // Get the newly created tag to get its ID
-                                    $allTags = $tagModel->getAll();
-                                    foreach ($allTags as $tag) {
-                                        if (strtolower($tag['name']) === strtolower($tagName)) {
-                                            $tagIds[] = $tag['id'];
-                                            break;
-                                        }
-                                    }
-                                }
+                                } 
                             }
                         }
                         

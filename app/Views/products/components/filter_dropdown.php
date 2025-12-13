@@ -11,10 +11,10 @@
         <!-- Search Filter -->
         <div class="mb-4">
             <label class="form-label fw-bold">Search Products</label>
-            <div class="input-group" style="border: 1px solid #ddd; border-radius: 8px; overflow: hidden;">
-                <input type="text" class="form-control border-0" placeholder="Search by name..." id="searchInput" 
+            <div class="input-group search-input-wrapper">
+                <input type="text" class="form-control" placeholder="Search by name..." id="searchInput" 
                        value="<?= isset($search) && $search !== 'all' ? htmlspecialchars($search) : '' ?>">
-                <button class="btn btn-outline-danger border-0" type="button" onclick="searchItem(1,null,1)">
+                <button class="btn btn-outline-danger" type="button" onclick="searchItem(1,null,1)">
                     <i class="fa fa-search"></i>
                 </button>
             </div>

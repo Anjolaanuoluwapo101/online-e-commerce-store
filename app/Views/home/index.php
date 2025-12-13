@@ -186,7 +186,7 @@
                                 <i class="fa fa-star text-warning"></i>
                                 <span class="small text-muted ms-1">(5.0)</span>
                             </div>
-                            <a href="/products/<?= $product['category_slug'] ?>/<?= urlencode($product['productname']) ?>/<?= $product['id'] ?>" class="btn btn-sm btn-outline-danger">
+                            <a href="/products/<?= $product['category_slug'] ?>/<?= urlencode($product['productname']) ?>/<?= $product['id'] ?>" class="btn btn-outline-primary me-2">
                                 <i class="fa fa-eye me-1"></i> View
                             </a>
                         </div>
@@ -207,21 +207,26 @@
             </div>
         </div>
         
-        <?php foreach ($tagsWithProducts as $tag): ?>
+        <?php foreach ($tagsWithProducts as $index => $tag): ?>
             <?php if (!empty($tag['products'])): ?>
-                <div class="row mb-5 fade-in-element" style="opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out;">
-                    <div class="col-12">
-                        <div class="d-flex justify-content-between align-items-center mb-4">
-                            <h3 class="mb-0">
-                                <a href="/tag/<?= $tag['slug'] ?>" class="text-decoration-none text-dark">
-                                    <?= $tag['name'] ?>
-                                </a>
-                            </h3>
-                            <a href="/tag/<?= $tag['slug'] ?>" class="btn btn-outline-danger btn-sm rounded-pill px-3">View All</a>
+                <!-- Tag Section with Background and Separator -->
+                <div class="tag-section mb-5 rounded-4 shadow-sm">
+                    <div class="container">
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h3 class="mb-0">
+                                        <a href="/tag/<?= $tag['slug'] ?>" class="text-decoration-none text-dark">
+                                            <?= $tag['name'] ?>
+                                        </a>
+                                    </h3>
+                                    <a href="/tag/<?= $tag['slug'] ?>" class="btn btn-outline-primary me-2 rounded-pill px-3">View All</a>
+                                </div>
+                            </div>
                         </div>
                         
                         <!-- Horizontal scrolling container -->
-                        <div class="horizontal-scroll-container" style="overflow-x: auto; scrollbar-width: thin; scrollbar-color: #f33f3f #f1f1f1;">
+                        <div class="horizontal-scroll-container">
                             <div class="d-flex" style="gap: 1.5rem; padding: 1rem 0.5rem;">
                                 <?php foreach ($tag['products'] as $product): ?>
                                     <div class="card product-item shadow-sm hover-lift border-0 flex-shrink-0" style="width: 16rem; transition: all 0.3s ease;">
@@ -245,6 +250,11 @@
                         </div>
                     </div>
                 </div>
+                
+                <!-- Separator between tag sections (except after the last one) -->
+                <?php if ($index < count($tagsWithProducts) - 1): ?>
+                    <hr class="my-4" style="border-top: 2px dashed #dee2e6; opacity: 0.5;">
+                <?php endif; ?>
             <?php endif; ?>
         <?php endforeach; ?>
     </div>
@@ -356,6 +366,21 @@
     background-attachment: fixed;
     background-size: cover;
     background-position: center;
+}
+
+/* Tag Section Enhancement */
+.tag-section {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+    border-radius: 1.5rem !important;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08) !important;
+    margin-bottom: 2rem !important;
+    padding: 2rem 1rem !important;
+    transition: all 0.3s ease;
+}
+
+.tag-section:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
 }
 
 /* Buttons Enhancement */
@@ -480,6 +505,12 @@
     /* Adjust horizontal scroll for mobile */
     .horizontal-scroll-container .card {
         width: 14rem;
+    }
+    
+    /* Tag section adjustments for mobile */
+    .tag-section {
+        padding: 1.5rem 0.5rem !important;
+        border-radius: 1.25rem !important;
     }
 }
 

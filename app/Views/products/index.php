@@ -41,7 +41,7 @@
         <div class="col-lg-9">
             <div class="row">
                 <?php foreach ($products as $product): ?>
-                    <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="col-lg-6 col-md-6 mb-4">
                         <?php include 'components/product_card.php'; ?>
                     </div>
                 <?php endforeach; ?>

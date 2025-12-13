@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap"
+        rel="stylesheet">
 
     <title>Shop Convenient</title>
 
@@ -17,25 +19,25 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link rel="stylesheet" href="/assets/css/shop-convenient.css">
-    
+
     <!-- Cart Symbol CSS -->
     <style>
         .navbar-brand h2 {
             font-size: 28px;
             font-weight: 700;
         }
-        
+
         .navbar {
             padding: 15px 0;
             background-color: #fff !important;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             transition: all 0.3s;
         }
-        
+
         .navbar.scrolled {
             padding: 10px 0;
         }
-        
+
         .navbar-nav .nav-link {
             font-weight: 500;
             margin: 0 10px;
@@ -44,13 +46,13 @@
             transition: all 0.3s;
             position: relative;
         }
-        
+
         .navbar-nav .nav-link:hover,
         .navbar-nav .nav-item.active .nav-link {
             background-color: #f33f3f;
             color: white !important;
         }
-        
+
         .navbar-nav .nav-link:hover::after,
         .navbar-nav .nav-item.active .nav-link::after {
             content: '';
@@ -62,28 +64,57 @@
             height: 0px;
             background-color: #f33f3f;
         }
-        
+
         .search-form {
             max-width: 300px;
             margin: 0 15px;
         }
-        
+
+        /* Search Input Styles */
+        .search-input-wrapper {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .search-input-wrapper .form-control {
+            border: none;
+            padding: 10px 15px;
+        }
+
+        .search-input-wrapper .form-control:focus {
+            box-shadow: none;
+            outline: none;
+        }
+
+        .search-input-wrapper .btn {
+            border: none;
+            background-color: #f8f9fa;
+            color: #6c757d;
+            transition: all 0.3s ease;
+        }
+
+        .search-input-wrapper .btn:hover {
+            background-color: #f33f3f;
+            color: white;
+        }
+
         .cart-btn {
             background-color: #f8f9fa;
             border-radius: 30px;
             padding: 8px 20px;
             transition: all 0.3s;
         }
-        
+
         .cart-btn:hover {
             background-color: #f33f3f;
             color: white;
         }
-        
+
         .cart-btn i {
             font-size: 18px;
         }
-        
+
         .cart-badge {
             background-color: #f33f3f;
             color: white;
@@ -96,15 +127,15 @@
             top: -5px;
             right: -5px;
         }
-        
+
         .main-content {
             padding: 0px 0;
         }
-        
+
         .footer {
             padding: 25px 0;
         }
-        
+
         /* Cart Symbol */
         .cartSymbol {
             position: fixed;
@@ -117,19 +148,19 @@
             text-align: center;
             border-radius: 50%;
             background: #f33f3f;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             transition: all 0.3s;
         }
-        
+
         .cartSymbol:hover {
             transform: scale(1.1);
         }
-        
+
         .cartSymbol i {
             color: white;
             font-size: 24px;
         }
-        
+
         .cartSymbol sub {
             position: absolute;
             top: -5px;
@@ -142,29 +173,42 @@
             line-height: 25px;
             font-size: 12px;
         }
-        
+
         /* Mobile adjustments */
         @media (max-width: 991px) {
             .navbar-nav .nav-link {
                 margin: 5px 0;
                 border-radius: 0;
             }
-            
+
             .search-form {
                 margin: 15px auto;
                 max-width: 100%;
             }
-            
+
             .cart-btn {
                 margin: 10px 0;
                 display: inline-block;
             }
         }
-        
+
         @media (max-width: 767px) {
             .main-content {
                 padding: 20px 0;
             }
+        }
+
+
+        .btn-outline-primary {
+            border: 1px solid #f33f3f !important;
+            color: #f33f3f !important;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: #f33f3f !important;
+            border: 1px solid #f33f3f !important;
+            box-shadow: 0 10px 20px rgba(243, 63, 63, 0.2) !important;
+            color: white !important;
         }
     </style>
 </head>
@@ -174,16 +218,22 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
             <div class="container">
-                <a class="navbar-brand" href="/"><h2>SHOP <em>CONV</em></h2></a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <a class="navbar-brand" href="/">
+                    <h2>SHOP <em>CONV</em></h2>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+                    aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav me-auto">
-                        <li class="nav-item <?= ($_SERVER['REQUEST_URI'] == '/' || $_SERVER['REQUEST_URI'] == '/index') ? 'active' : '' ?>">
+                        <li
+                            class="nav-item <?= ($_SERVER['REQUEST_URI'] == '/' || $_SERVER['REQUEST_URI'] == '/index') ? 'active' : '' ?>">
                             <a class="nav-link" href="/">Home</a>
-                        </li> 
-                        <li class="nav-item <?= (strpos($_SERVER['REQUEST_URI'], '/products') !== false) ? 'active' : '' ?>">
+                        </li>
+                        <li
+                            class="nav-item <?= (strpos($_SERVER['REQUEST_URI'], '/products') !== false) ? 'active' : '' ?>">
                             <a class="nav-link" href="/products">Products</a>
                         </li>
                         <li class="nav-item <?= ($_SERVER['REQUEST_URI'] == '/about') ? 'active' : '' ?>">
@@ -194,9 +244,9 @@
                         </li>
                     </ul>
                     <form class="d-flex search-form" action="/products/search" method="GET">
-                        <div class="input-group" style="border: 1px solid #ddd; border-radius: 8px; overflow: hidden;">
-                            <input type="text" name="item" class="form-control border-0" placeholder="Search products..." aria-label="Search">
-                            <button class="btn btn-outline-danger border-0" type="submit"><i class="fa fa-search"></i></button>
+                        <div class="input-group search-input-wrapper">
+                            <input type="text" name="item" class="form-control" placeholder="Search products..." aria-label="Search">
+                            <button class="btn" type="submit"><i class="fa fa-search"></i></button>
                         </div>
                     </form>
                     <ul class="navbar-nav">
@@ -253,15 +303,16 @@
     <script src="/assets/js/isotope.js"></script>
     <script src="/assets/js/accordions.js"></script>
 
-    <script language="text/Javascript"> 
+    <script language="text/Javascript">
         cleared[0] = cleared[1] = cleared[2] = 0; //set a cleared flag for each field
-        function clearField(t){                   //declaring the array outside of the
-            if(!cleared[t.id]){                      // function makes it static and global
+        function clearField(t) {                   //declaring the array outside of the
+            if (!cleared[t.id]) {                      // function makes it static and global
                 cleared[t.id] = 1;  // you could use true and false, but that's more typing
-                t.value='';         // with more chance of typos
-                t.style.color='#fff';
+                t.value = '';         // with more chance of typos
+                t.style.color = '#fff';
             }
         }
     </script>
 </body>
+
 </html>

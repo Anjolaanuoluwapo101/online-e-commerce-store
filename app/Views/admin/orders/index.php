@@ -95,6 +95,7 @@
                                         <th>Customer Email</th>
                                         <th>Total Amount</th>
                                         <th>Status</th>
+                                        <th>Address</th>
                                         <th>Payment Status</th>
                                         <th>Created At</th>
                                         <th>Actions</th>
@@ -112,6 +113,8 @@
                                                     <?= ucfirst($order['status']) ?>
                                                 </span>
                                             </td>
+                                            <!-- Add the address of the order -->
+                                            <td><?= htmlspecialchars($order['address']) ?></td>
                                             <td>
                                                 <span
                                                     class="badge bg-<?= $order['payment_status'] === 'paid' ? 'success' : ($order['payment_status'] === 'refunded' ? 'danger' : 'secondary') ?>">

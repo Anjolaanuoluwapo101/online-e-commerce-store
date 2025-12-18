@@ -440,6 +440,8 @@
 
 /* Horizontal Scroll Container */
 .horizontal-scroll-container {
+    overflow-x: auto;
+    white-space: nowrap;
     scrollbar-width: thin;
     scrollbar-color: #f33f3f #f1f1f1;
 }

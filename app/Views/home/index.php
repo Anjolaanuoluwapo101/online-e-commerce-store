@@ -14,10 +14,10 @@
 <!-- Hero Section -->
 <div class="hero-section position-relative overflow-hidden">
     <!-- Background slideshow -->
-    <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+    <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">  
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <div class="hero-slide" style="background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6)), url('<?= R2_PUBLIC_BUCKET_URL.'/manwithbags.jpg'?>') center/cover no-repeat; height: 100vh;">
+                <div class="hero-slide" style="background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6)), url('/assets/images/slide_01.jpg') center/cover no-repeat; height: 100vh;">
                     <div class="container h-100 d-flex align-items-center">
                         <div class="row w-100">
                             <div class="col-lg-8 mx-auto text-center">
@@ -37,7 +37,7 @@
                 </div>
             </div>
             <div class="carousel-item">
-                <div class="hero-slide" style="background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6)), url('<?= R2_PUBLIC_BUCKET_URL.'/marketplace.jpg'?>') center/cover no-repeat; height: 100vh;">
+                <div class="hero-slide" style="background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6)), url('/assets/images/slide_02.jpg') center/cover no-repeat; height: 100vh;">
                     <div class="container h-100 d-flex align-items-center">
                         <div class="row w-100">
                             <div class="col-lg-8 mx-auto text-center">
@@ -57,7 +57,7 @@
                 </div>
             </div>
             <div class="carousel-item">
-                <div class="hero-slide" style="background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6)), url('<?= R2_PUBLIC_BUCKET_URL.'/pointingatlaptop.jpg'?>') center/cover no-repeat; height: 100vh;">
+                <div class="hero-slide" style="background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6)), url('/assets/images/slide_03.jpg') center/cover no-repeat; height: 100vh;">
                     <div class="container h-100 d-flex align-items-center">
                         <div class="row w-100">
                             <div class="col-lg-8 mx-auto text-center">
@@ -261,12 +261,12 @@
 <?php endif; ?>
 
 <!-- About Section -->
-<div class="about-section py-5 position-relative overflow-hidden" style="background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('<?= R2_PUBLIC_BUCKET_URL ?>/banner2.jpg') center/cover no-repeat;" id="aboutSection">
+<div class="about-section py-5 position-relative overflow-hidden" style="background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/assets/images/groceries.jpg') center/cover no-repeat;" id="aboutSection">
     <div class="container position-relative" style="z-index: 2;">
         <div class="row align-items-center justify-content-center">
             <div class="col-lg-8 text-center text-white fade-in-element" style="opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out;">
                 <h2 class="display-5 fw-bold mb-4">About Shop Convenient</h2>
-                <p class="lead mb-4 fs-5">We offer premium quality products with the best customer service. Our commitment is to provide you with an exceptional shopping experience.</p>
+                <p class=" text-white mb-4 fs-5">We offer premium quality products with the best customer service. Our commitment is to provide you with an exceptional shopping experience.</p>
                 
                 <div class="row mb-4 justify-content-center">
                     <div class="col-md-5 mb-3 mb-md-0">

@@ -1,0 +1,541 @@
+<?php
+
+namespace App\Controllers\Admin;
+
+use App\Core\Controller;
+use App\Models\Product;
+use App\Models\Category;
+use App\Services\R2Service;
+use App\Models\Tag;
+
+class ProductController extends Controller
+{
+    private $categoryModel;
+    private $productModel;
+    private $r2Service;
+    private $tagModel;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->categoryModel = new Category();
+        $this->productModel = new Product();
+        $this->r2Service = new R2Service();
+        $this->tagModel = new Tag();
+    }
+
+    /**
+     * Show all products
+     * 
+     * @return void
+     */
+    public function index()
+    {
+        try {
+            // Get all products
+            $products = $this->productModel->getAll();
+            
+            // Get cart item count
+            $cartItemCount = 0;
+            if (isset($_SESSION['XCart'])) {
+                $cartItemCount = count($_SESSION['XCart']);
+            }
+            
+            $data = [
+                'products' => $products,
+                'cartItemCount' => $cartItemCount
+            ];
+            
+            $this->view->renderWithLayout('admin/products/index', $data, 'layouts/admin');
+        } catch (\Exception $e) {
+            // Log the error
+            error_log('Admin ProductController@index error: ' . $e->getMessage());
+            
+            // Get cart item count
+            $cartItemCount = 0;
+            if (isset($_SESSION['XCart'])) {
+                $cartItemCount = count($_SESSION['XCart']);
+            }
+            
+            // Render view with error message
+            $data = [
+                'products' => [],
+                'cartItemCount' => $cartItemCount,
+                'error' => 'An error occurred while loading products. Please try again later.'
+            ];
+            
+            $this->view->renderWithLayout('admin/products/index', $data, 'layouts/admin');
+        }
+    }
+
+    /**
+     * Get products with optional filtering and sorting (async)
+     * 
+     * @return void
+     */
+    public function filter()
+    {
+        try {
+            $categoryId = $this->get('category_id');
+            $searchTerm = $this->get('search');
+            $orderBy = $this->get('order_by', 'created_at');
+            $direction = $this->get('direction', 'DESC');
+            
+            // Get products based on filters
+            if ($categoryId && $categoryId !== 'all') {
+                $products = $this->productModel->getByCategoryId($categoryId, null, 0, $orderBy, $direction);
+            } else {
+                $products = $this->productModel->getAll(null, 0, $orderBy, $direction);
+            }
+            
+            // Apply client-side search filtering if provided
+            if ($searchTerm) {
+                $filteredProducts = [];
+                foreach ($products as $product) {
+                    if (stripos($product['productname'], $searchTerm) !== false ||
+                        stripos($product['brand'], $searchTerm) !== false ||
+                        stripos($product['description'], $searchTerm) !== false) {
+                        $filteredProducts[] = $product;
+                    }
+                }
+                $products = $filteredProducts;
+            }
+            
+            // Add tags to each product for the view
+            foreach ($products as &$product) {
+                $product['tags'] = $this->productModel->getTags($product['id']);
+            }
+            
+            header('Content-Type: application/json');
+            echo json_encode($products);
+        } catch (\Exception $e) {
+            // Log the error
+            error_log('Admin\\ProductController@filter error: ' . $e->getMessage());
+            // Return error response
+            header('Content-Type: application/json');
+            http_response_code(500);
+            echo json_encode(['error' => 'An error occurred while filtering products. Please try again later.']);
+        }
+    }
+
+    /**
+     * Show form to add product
+     * 
+     * @return void
+     */
+    public function create()
+    {
+        try {
+            $categories = $this->categoryModel->getAll();
+            $tags = $this->tagModel->getAll(); // Get all existing tags
+            
+            $data = [
+                'categories' => $categories,
+                'tags' => $tags, // Pass tags to the view
+                'nameError' => '',
+                'imageError' => '',
+                'successMessage' => ''
+            ];
+            
+            $this->view->renderWithLayout('admin/products/create', $data, 'layouts/admin');
+        } catch (\Exception $e) {
+            // Log the error
+            error_log('Admin ProductController@create error: ' . $e->getMessage());
+            
+            // Get categories for the form
+            $categories = $this->categoryModel->getAll();
+            $tags = $this->tagModel->getAll(); // Get all existing tags
+            
+            // Render view with error message
+            $data = [
+                'categories' => $categories,
+                'tags' => $tags, // Pass tags to the view
+                'nameError' => '',
+                'imageError' => '',
+                'successMessage' => '',
+                'error' => 'An error occurred while loading the product creation form. Please try again later.'
+            ];
+            
+            $this->view->renderWithLayout('admin/products/create', $data, 'layouts/admin');
+        }
+    }
+
+    /**
+     * Store new product
+     * 
+     * @return void
+     */
+    public function store()
+    {
+        $nameError = "";
+        $imageError = "";
+        $successMessage = "";
+        
+        try {
+            if ($this->post('productname')) {
+                // Initialize variables
+                $name = htmlspecialchars(stripslashes(trim($this->post('productname'))));
+                $brand = htmlspecialchars(trim($this->post('brand')));
+                $quantity = intval($this->post('quantity'));
+                $price = floatval($this->post('price'));
+                $categoryId = intval($this->post('category_id'));
+                $description = htmlspecialchars(trim($this->post('description')));
+
+                // Store this values above as Old Values in Session
+                $_SESSION['oldProductData'] = [
+                    'name' => $name,
+                    'brand' => $brand,
+                    'quantity' => $quantity,
+                    'price' => $price,
+                    'categoryId' => $categoryId,
+                    'description' => $description
+                ];
+                
+                // Validate required fields
+                if (empty($name)) {
+                    $nameError = "<span style='color:red'> *Product name is required </span>";
+                }
+                
+                if (empty($categoryId)) {
+                    $nameError = "<span style='color:red'> *Category is required </span>";
+                }
+                
+                if ($quantity < 0) {
+                    $nameError = "<span style='color:red'> *Quantity must be zero or greater </span>";
+                }
+                
+                if ($price <= 0) {
+                    $nameError = "<span style='color:red'> *Price must be greater than zero </span>";
+                }
+                
+                // Validate category if no other errors
+                if (empty($nameError)) {
+                    $category = $this->categoryModel->getById($categoryId);
+                    if (!$category) {
+                        $nameError = "<span style='color:red'> *Invalid category </span>";
+                    }
+                }
+                
+                // Check if product name already exists in this category
+                if (empty($nameError)) {
+                    $existingProduct = $this->productModel->getByNameAndCategory($name, $categoryId);
+                    if ($existingProduct) {
+                        $nameError = "<span style='color:red'> *Product Name already exists in this category </span>";
+                    }
+                }
+                
+                // Validate image if no other errors
+                if (empty($nameError)) {
+                    if (!isset($_FILES['image']) || $_FILES['image']['error'] === UPLOAD_ERR_NO_FILE) {
+                        $imageError = "<span style='color:red'> *Product image is required </span>";
+                    } elseif ($_FILES['image']['error'] !== UPLOAD_ERR_OK) {
+                        $imageError = "<span style='color:red'> *Error uploading image </span>";
+                    } elseif (!in_array($_FILES['image']['type'], ["image/jpeg", "image/png"])) {
+                        $imageError = "<span style='color:red'> *Invalid file type. Only JPG and PNG images are allowed </span>";
+                    } elseif ($_FILES['image']['size'] > 5000000) { // 5MB limit
+                        $imageError = "<span style='color:red'> *Image file size too large. Maximum 5MB allowed </span>";
+                    }
+                }
+                
+                // Process if no errors
+                if (empty($nameError) && empty($imageError)) {
+                    // Process image using R2 service
+                    $imageName = $_FILES['image']['name'];
+                    // Sanitize name for filename (preserve spaces as underscores)
+                    $sanitizedName = preg_replace('/[^a-zA-Z0-9-_ ]/', '', $name);
+                    $sanitizedName = str_replace(' ', '_', $sanitizedName);
+                    
+                    // Determine file extension
+                    $extension = "";
+                    if ($_FILES['image']['type'] == "image/jpeg") {
+                        $extension = ".jpg";
+                    } elseif ($_FILES['image']['type'] == "image/png") {
+                        $extension = ".png";
+                    }
+                    
+                    $finalFileName = $sanitizedName . $extension;
+                    $oldPath = $_FILES['image']['tmp_name'];
+                    $mimeType = $_FILES['image']['type'];
+
+                    // Upload to R2 instead of local storage
+                    $imageUrl = $this->r2Service->uploadFile($oldPath, $finalFileName, $mimeType);
+
+                    // Insert into database (use original name with spaces)
+                    $data = [
+                        'category_id' => $categoryId,
+                        'productname' => $name, // Use original name with spaces
+                        'brand' => $brand,
+                        'price' => $price,
+                        'quantity' => $quantity,
+                        'imagepath' => $finalFileName, // Store just the filename, construct full URL when needed
+                        'description' => $description,
+                        'upvotes' => 0
+                    ];
+                    
+                    $productId = $this->productModel->create($data);
+                    // if ($productId) {
+                    //     // Handle product tags if provided
+                    //     if ($this->post('tags')) {
+                    //         $tagsInput = trim($this->post('tags'));
+                    //         if (!empty($tagsInput)) {
+                    //             $tagNames = array_map('trim', explode(',', $tagsInput));
+                    //             $tagIds = [];
+                                
+                    //             foreach ($tagNames as $tagName) {
+                    //                 if (!empty($tagName)) {
+                    //                     // Check if tag already exists using the new getByName method
+                    //                     $existingTag = $this->tagModel->getByName($tagName);
+                                        
+                    //                     if ($existingTag) {
+                    //                         $tagIds[] = $existingTag['id'];
+
+                    //                     } 
+                    //                 }
+                    //             }
+                                
+                    //             // Attach tags to product
+                    //             if (!empty($tagIds)) {
+                    //                 foreach ($tagIds as $tagId) {
+                    //                     $productTagModel = new \App\Models\ProductTag();
+                    //                     $productTagModel->attachTag($productId, $tagId);
+                    //                 }
+                    //             }
+                    //         }
+                    //     }
+                        
+                    //     $successMessage = "Product added successfully!";
+                    //     // Clear old data from session on success
+                    //     unset($_SESSION['oldProductData']);
+                    // } else {
+                    //     $imageError = "<span style='color:red'> *Failed to save product to database </span>";
+                    // }
+                }
+            }
+        } catch (\Exception $e) {
+            // Log the error
+            error_log('Admin ProductController@store error: ' . $e->getMessage());
+            $imageError = "<span style='color:red'> *An unexpected error occurred. Please try again later. </span>";
+        }
+        
+        $categories = $this->categoryModel->getAll();
+        $data = [
+            'categories' => $categories,
+            'nameError' => $nameError,
+            'imageError' => $imageError,
+            'successMessage' => $successMessage
+        ];
+        
+        $this->view->renderWithLayout('admin/products/create', $data, 'layouts/admin');
+    }
+
+    /**
+     * Show form to edit product
+     * 
+     * @param int $id Product ID
+     * @return void
+     */
+    public function edit($id)
+    {
+        try {
+            $product = $this->productModel->getById($id);
+            
+            if (!$product) {
+                http_response_code(404);
+                echo "Product not found";
+                return;
+            }
+            
+            $categories = $this->categoryModel->getAll();
+            $tags = (new \App\Models\Tag())->getAll(); // Get all existing tags
+            $productTags = $this->productModel->getTags($id); // Get tags for this product
+            
+            $data = [
+                'product' => $product,
+                'categories' => $categories,
+                'tags' => $tags, // Pass all tags to the view
+                'productTags' => $productTags // Pass product's current tags to the view
+            ];
+            
+            $this->view->renderWithLayout('admin/products/edit', $data, 'layouts/admin');
+        } catch (\Exception $e) {
+            // Log the error
+            error_log('Admin ProductController@edit error: ' . $e->getMessage());
+            
+            // Get categories for the form
+            $categories = $this->categoryModel->getAll();
+            $tags = (new \App\Models\Tag())->getAll(); // Get all existing tags
+            
+            // Render view with error message
+            $data = [
+                'product' => null,
+                'categories' => $categories,
+                'tags' => $tags, // Pass tags to the view
+                'productTags' => [], // No product tags if there's an error
+                'error' => 'An error occurred while loading the product edit form. Please try again later.'
+            ];
+            
+            $this->view->renderWithLayout('admin/products/edit', $data, 'layouts/admin');
+        }
+    }
+
+    /**
+     * Update product
+     * 
+     * @param int $id Product ID
+     * @return void
+     */
+    public function update($id)
+    {
+        try {
+            $product = $this->productModel->getById($id);
+            
+            if (!$product) {
+                http_response_code(404);
+                echo "Product not found";
+                return;
+            }
+            
+            // Get form data
+            $data = [
+                'productname' => htmlspecialchars(stripslashes(trim($this->post('productname')))),
+                'brand' => htmlspecialchars(trim($this->post('brand'))),
+                'price' => floatval($this->post('price')),
+                'quantity' => intval($this->post('quantity')),
+                'description' => htmlspecialchars(trim($this->post('description'))),
+                'category_id' => intval($this->post('category_id'))
+            ];
+            
+            // Handle image update if a new image was uploaded
+            if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+                // Validate file type
+                if (!in_array($_FILES['image']['type'], ["image/jpeg", "image/png"])) {
+                    $_SESSION['errorMessage'] = 'Invalid file type. Only JPG and PNG images are allowed.';
+                    $this->redirect("/admin/products/{$id}/edit");
+                    return;
+                }
+                
+                // Validate file size (5MB limit)
+                if ($_FILES['image']['size'] > 5000000) {
+                    $_SESSION['errorMessage'] = 'Image file size too large. Maximum 5MB allowed.';
+                    $this->redirect("/admin/products/{$id}/edit");
+                    return;
+                }
+                
+                // Upload new image first (before deleting old one)
+                $sanitizedName = preg_replace('/[^a-zA-Z0-9-_ ]/', '', $data['productname']);
+                $sanitizedName = str_replace(' ', '_', $sanitizedName);
+                $extension = ($_FILES['image']['type'] == "image/jpeg") ? ".jpg" : ".png";
+                $finalFileName = $sanitizedName . $extension;
+
+                $this->r2Service->uploadFile(
+                    $_FILES['image']['tmp_name'],
+                    $finalFileName,
+                    $_FILES['image']['type']
+                );
+
+                // Upload succeeded — now safe to delete old image
+                if (!empty($product['imagepath']) && $product['imagepath'] !== $finalFileName) {
+                    try {
+                        $this->r2Service->deleteFile($product['imagepath']);
+                    } catch (\Exception $e) {
+                        error_log("Failed to delete old image: " . $e->getMessage());
+                    }
+                }
+
+                // Add new filename to the data array for database update
+                $data['imagepath'] = $finalFileName;
+            }
+            
+            // Update product
+            if ($this->productModel->updateProduct($id, $data)) {
+                // Handle product tags if provided
+                if ($this->post('tags') !== null) {
+                    $tagModel = new \App\Models\Tag();
+                    $tagsInput = trim($this->post('tags'));
+                    
+                    // First, detach all existing tags for this product
+                    $productTagModel = new \App\Models\ProductTag();
+                    $productTagModel->detachAllTags($id);
+                    
+                    if (!empty($tagsInput)) {
+                        $tagNames = array_map('trim', explode(',', $tagsInput));
+                        $tagIds = [];
+                        
+                        foreach ($tagNames as $tagName) {
+                            if (!empty($tagName)) {
+                                // Check if tag already exists using the new getByName method
+                                $existingTag = $tagModel->getByName($tagName);
+                                
+                                if ($existingTag) {
+                                    $tagIds[] = $existingTag['id'];
+                                } 
+                            }
+                        }
+                        
+                        // Attach tags to product
+                        if (!empty($tagIds)) {
+                            foreach ($tagIds as $tagId) {
+                                $productTagModel->attachTag($id, $tagId);
+                            }
+                        }
+                    }
+                }
+                
+                $this->redirect("/admin/products/{$id}/edit");
+            } else {
+                echo "Error updating product";
+            }
+        } catch (\Exception $e) {
+            // Log the error
+            error_log('Admin ProductController@update error: ' . $e->getMessage());
+            
+            // Redirect with error message
+            $_SESSION['errorMessage'] = 'An error occurred while updating the product. Please try again later.';
+            $this->redirect("/admin/products/{$id}/edit");
+        }
+    }
+
+    /**
+     * Delete product
+     * 
+     * @param int $id Product ID
+     * @return void
+     */
+    public function delete($id)
+    {
+        try {
+            // First get the product to get the image filename
+            $product = $this->productModel->getById($id);
+            
+            if (!$product) {
+                http_response_code(404);
+                echo "Product not found";
+                return;
+            }
+            
+            // Delete the image from R2 storage
+            if (!empty($product['imagepath'])) {
+                try {
+                    $this->r2Service->deleteFile($product['imagepath']);
+                } catch (\Exception $e) {
+                    // Log the error but continue with product deletion
+                    error_log("Failed to delete image from R2: " . $e->getMessage());
+                }
+            }
+            
+            // Delete the product from database
+            if ($this->productModel->deleteProduct($id)) {
+                $this->redirect('/admin/products');
+            } else {
+                echo "Error deleting product";
+            }
+        } catch (\Exception $e) {
+            // Log the error
+            error_log('Admin ProductController@delete error: ' . $e->getMessage());
+            
+            // Redirect with error message
+            $_SESSION['errorMessage'] = 'An error occurred while deleting the product. Please try again later.';
+            $this->redirect('/admin/products');
+        }
+    }
+}

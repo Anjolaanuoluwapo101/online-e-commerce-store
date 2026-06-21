@@ -2,7 +2,7 @@ name: Supabase Keep Alive
 
 on:
   schedule:
-    # Runs every day at 12 PM UTC
+    # Every day at 12:00 UTC
     - cron: "0 12 * * *"
 
   workflow_dispatch:
@@ -12,11 +12,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Install PostgreSQL client
-        run: sudo apt-get update && sudo apt-get install -y postgresql-client
+      - name: Install PostgreSQL Client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
 
-      - name: Ping Supabase
+      - name: Update heartbeat row
         env:
           DATABASE_URL: ${{ secrets.SUPABASE_DB_URL }}
         run: |
-          psql "$DATABASE_URL" -c "SELECT 1;"
+          psql "$DATABASE_URL" -c "
+          UPDATE keepalive
+          SET last_ping = NOW()
+          WHERE id = 1;
+          "
